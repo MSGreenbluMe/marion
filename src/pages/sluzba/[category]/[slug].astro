@@ -4,6 +4,7 @@ import BookingActions from '../../../components/BookingActions.astro';
 import { categories, serviceUrl, type Category, type Service } from '../../../data/services';
 import { fromPrice, lengthSummary, optionPrice } from '../../../lib/format';
 import { primaryAction } from '../../../lib/booking';
+import Illustration from '../../../components/Illustration.astro';
 
 export function getStaticPaths() {
   return categories.flatMap((category) =>
@@ -34,7 +35,8 @@ const description = source
 const siblings = category.services.filter((s) => s.slug !== service.slug);
 ---
 <Base title={service.name} description={description} bookingService={service.name} bookingOption={firstOption}>
-  <article class="section">
+  <article class="section page">
+    <Illustration name={category.illustration} class="backdrop" />
     <div class="wrap">
       <nav class="crumbs" aria-label="Drobečková navigace">
         <a href={`/${category.id}`}>{category.name}</a>
@@ -46,9 +48,11 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
           {service.summary && <p class="lead">{service.summary}</p>}
           {service.description && service.description.split(/\n\s*\n/).map((p) => <p>{p}</p>)}
           {service.benefits.length > 0 && (
-            <ul class="benefits">
-              {service.benefits.map((b) => <li>{b}</li>)}
-            </ul>
+            <ol class="benefits">
+              {service.benefits.map((b, i) => (
+                <li><span class="num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{b}</li>
+              ))}
+            </ol>
           )}
 
           {blocks.map((b) => (
@@ -113,6 +117,19 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
 </script>
 
 <style>
+  .page {
+    overflow: hidden;
+    padding-top: clamp(3rem, 7vw, 5.5rem);
+  }
+  .page :global(.backdrop) {
+    position: absolute;
+    right: -6rem;
+    top: -3rem;
+    width: min(34rem, 80vw);
+    color: var(--gold);
+    opacity: 0.09;
+    pointer-events: none;
+  }
   .crumbs {
     margin-bottom: 1.5rem;
   }
@@ -150,21 +167,24 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
   .benefits {
     list-style: none;
     padding: 0;
-    margin: 2rem 0;
+    margin: 2.5rem 0;
+    display: grid;
+    gap: 0.75rem;
   }
   .benefits li {
-    position: relative;
-    padding-left: 1.75rem;
-    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: baseline;
+    gap: 1.1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--line-dark);
+    border-radius: 0.5rem;
+    background: oklch(0.78 0.126 85 / 0.03);
   }
-  .benefits li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.85em;
-    width: 0.8rem;
-    height: 1px;
-    background: var(--gold);
+  .num {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.15rem;
   }
   .block {
     margin-top: 3rem;
@@ -173,9 +193,14 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
     font-size: 1.75rem;
   }
   .book {
+    position: relative;
     padding: 2rem;
     border: 1px solid var(--line-dark);
-    background: var(--green-950);
+    border-radius: 0.75rem;
+    background:
+      radial-gradient(80% 60% at 100% 0%, oklch(0.78 0.126 85 / 0.08), transparent 70%),
+      var(--green-950);
+    box-shadow: 0 2rem 4rem -2.5rem oklch(0.05 0.02 148);
   }
   .book-title {
     font-family: var(--font-text);

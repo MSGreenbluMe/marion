@@ -1,24 +1,36 @@
 ---
 import { site } from '../data/site';
+import Illustration from './Illustration.astro';
 const { about, ownerFirstName } = site;
-// Until the verbatim "O mně" text from the live site is added, a short factual line stands in.
+// Until the "O mně" text is supplied, a short factual line stands in.
 const paragraphs = about.paragraphs.length
   ? about.paragraphs
   : [`Jsem ${ownerFirstName} a ve svém studiu v Hradci Králové nabízím masáže, meditace a ženské rituály.`];
 const hasPortrait = Boolean(about.portrait.src);
 ---
 <section class="section about" id="o-mne" aria-labelledby="about-title">
-  <div class:list={['wrap', 'grid', { 'has-portrait': hasPortrait }]}>
-    {hasPortrait && (
-      <figure class="portrait">
-        <img src={about.portrait.src} alt={about.portrait.alt || `${ownerFirstName}, ${site.name}`} width="640" height="800" loading="lazy" decoding="async" />
-      </figure>
-    )}
+  <div class="wrap grid">
+    <div class="visual">
+      <div class="arch frame">
+        {hasPortrait ? (
+          <img src={about.portrait.src} alt={about.portrait.alt || `${ownerFirstName}, ${site.name}`} width="640" height="860" loading="lazy" decoding="async" />
+        ) : (
+          <div class="still" aria-hidden="true">
+            <Illustration name="lotus" class="lotus" />
+          </div>
+        )}
+        <div class="arch-line"></div>
+      </div>
+      <Illustration name="sprig" class="sprig" />
+    </div>
+
     <div class="text">
       <p class="eyebrow">O mně</p>
-      <h2 id="about-title">{ownerFirstName}</h2>
-      <hr class="rule" />
-      {paragraphs.map((p) => <p>{p}</p>)}
+      <h2 id="about-title">Cesta zpět <em>k sobě</em></h2>
+      {paragraphs.map((p, i) =>
+        i === about.highlight ? <p class="quote">{p}</p> : <p>{p}</p>,
+      )}
+      <p class="signature" aria-hidden="true">{ownerFirstName}</p>
 
       {about.audioGreeting.src && (
         <div class="audio">
@@ -37,30 +49,81 @@ const hasPortrait = Boolean(about.portrait.src);
 </section>
 
 <style>
+  .about {
+    overflow: hidden;
+  }
   .grid {
     display: grid;
-    gap: 3rem;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media (min-width: 56rem) {
+    .grid {
+      grid-template-columns: 5fr 7fr;
+      gap: 6rem;
+    }
+  }
+  .visual {
+    position: relative;
+    width: min(100%, 24rem);
+    margin-inline: auto;
+  }
+  .frame {
+    aspect-ratio: 3 / 4;
+    background:
+      radial-gradient(70% 50% at 50% 65%, oklch(0.34 0.045 115), transparent 75%),
+      linear-gradient(180deg, var(--green-800), var(--green-950));
+  }
+  .frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .still {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .still :global(.lotus) {
+    width: 58%;
+    margin-top: 18%;
+    color: var(--gold);
+    --illo-fill: oklch(0.29 0.04 125);
+  }
+  .visual :global(.sprig) {
+    position: absolute;
+    right: -14%;
+    bottom: -8%;
+    width: 36%;
+    color: var(--gold);
+    --illo-fill: var(--green-900);
+    rotate: 14deg;
   }
   .text {
     max-width: var(--measure);
     font-size: 1.125rem;
   }
-  .has-portrait {
-    align-items: center;
+  h2 {
+    margin-bottom: 1.75rem;
   }
-  @media (min-width: 52rem) {
-    .has-portrait {
-      grid-template-columns: 5fr 7fr;
-      gap: 5rem;
-    }
+  .quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.45rem, 2.6vw, 1.8rem);
+    line-height: 1.4;
+    color: var(--gold-soft);
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--gold);
+    margin: 2rem 0;
   }
-  .portrait {
-    margin: 0;
-  }
-  .portrait img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
+  .signature {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 2.2rem;
+    color: var(--gold);
+    margin-top: 1.5rem;
   }
   .audio {
     margin-top: 2rem;

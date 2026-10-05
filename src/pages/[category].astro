@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { categories, serviceUrl, type Category } from '../data/services';
 import { fromPrice, lengthSummary } from '../lib/format';
+import Illustration from '../components/Illustration.astro';
 
 export function getStaticPaths() {
   return categories.map((category) => ({ params: { category: category.id }, props: { category } }));
@@ -10,11 +11,19 @@ const { category } = Astro.props as { category: Category };
 const others = categories.filter((c) => c.id !== category.id);
 ---
 <Base title={category.name} description={category.metaDescription}>
-  <section class="section">
+  <section class="section page">
     <div class="wrap">
-      <p class="eyebrow">Moje nabídka</p>
-      <h1>{category.name}</h1>
-      {category.intro && <p class="lead">{category.intro}</p>}
+      <header class="head">
+        <div>
+          <p class="eyebrow">Moje nabídka</p>
+          <h1>{category.name}</h1>
+          {category.intro && <p class="lead">{category.intro}</p>}
+        </div>
+        <div class="arch head-arch" aria-hidden="true">
+          <Illustration name={category.illustration} class="head-illo" />
+          <div class="arch-line"></div>
+        </div>
+      </header>
 
       <ul class="list">
         {category.services.map((s) => (
@@ -41,10 +50,44 @@ const others = categories.filter((c) => c.id !== category.id);
 </Base>
 
 <style>
+  .page {
+    padding-top: clamp(3rem, 7vw, 5.5rem);
+  }
+  .head {
+    display: grid;
+    gap: 2.5rem;
+    align-items: end;
+  }
+  @media (min-width: 48rem) {
+    .head {
+      grid-template-columns: 1fr 14rem;
+      gap: 4rem;
+    }
+  }
+  .head-arch {
+    width: min(60%, 14rem);
+    aspect-ratio: 3 / 3.6;
+    background:
+      radial-gradient(70% 50% at 50% 62%, oklch(0.34 0.045 115), transparent 75%),
+      linear-gradient(180deg, var(--green-800), var(--green-950));
+    display: grid;
+    place-items: center;
+  }
+  @media (min-width: 48rem) {
+    .head-arch {
+      width: 100%;
+    }
+  }
+  .head-arch :global(.head-illo) {
+    width: 56%;
+    margin-top: 22%;
+    color: var(--gold);
+    --illo-fill: oklch(0.29 0.04 125);
+  }
   .list {
     list-style: none;
     padding: 0;
-    margin: 3.5rem 0 3rem;
+    margin: 4rem 0 3rem;
     border-top: 1px solid var(--line-dark);
   }
   .list a {

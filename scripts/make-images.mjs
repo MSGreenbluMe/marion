@@ -13,8 +13,8 @@ const font = (pkg, file) => pathToFileURL(join(root, 'node_modules/@fontsource',
 const tmp = mkdtempSync(join(tmpdir(), 'marion-img-'));
 
 const fontCss = `
-@font-face{font-family:C;font-weight:300;src:url(${font('cormorant-garamond', 'cormorant-garamond-latin-300-normal.woff2')})}
-@font-face{font-family:C;font-weight:300;src:url(${font('cormorant-garamond', 'cormorant-garamond-latin-ext-300-normal.woff2')});unicode-range:U+0100-02AF}
+@font-face{font-family:C;font-weight:300;src:url(${font('fraunces', 'fraunces-latin-300-normal.woff2')})}
+@font-face{font-family:C;font-weight:300;src:url(${font('fraunces', 'fraunces-latin-ext-300-normal.woff2')});unicode-range:U+0100-02AF}
 @font-face{font-family:J;font-weight:300;src:url(${font('jost', 'jost-latin-300-normal.woff2')})}
 @font-face{font-family:J;font-weight:300;src:url(${font('jost', 'jost-latin-ext-300-normal.woff2')});unicode-range:U+0100-02AF}
 `;
@@ -23,7 +23,7 @@ const og = `<!doctype html><meta charset="utf-8"><style>${fontCss}
 html,body{margin:0;width:1200px;height:630px;overflow:hidden}
 body{background:radial-gradient(60% 80% at 50% 55%, oklch(0.78 0.126 85 / .22), transparent 70%), oklch(0.19 0.028 148);
 color:oklch(0.93 0.018 85);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:J}
-h1{font-family:C;font-weight:300;font-size:132px;margin:0;letter-spacing:.01em}
+h1{font-family:C;font-weight:300;font-size:118px;margin:0;letter-spacing:-.01em}
 hr{width:64px;border:0;height:1px;background:oklch(0.78 0.126 85);margin:28px 0 30px}
 p{margin:0;font-size:30px;letter-spacing:.04em;color:oklch(0.8 0.022 110)}
 small{position:absolute;bottom:44px;font-size:20px;letter-spacing:.3em;text-transform:uppercase;color:oklch(0.78 0.126 85)}

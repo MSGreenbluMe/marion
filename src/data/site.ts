@@ -45,6 +45,8 @@ export const site = {
       'Věřím, že skutečná proměna začíná v tichu a návrat k sobě samé mění i svět kolem nás.',
       'Budu ráda, když se naše cesty potkají.',
     ],
+    // Which paragraph (counting from 0) is shown larger, as a quote. -1 = none.
+    highlight: 2,
     // Portrait of Martina. Put the file into /public/images/ and fill in src + alt.
     portrait: { src: '', alt: '' },
     // Short audio greeting in Martina's own voice. Put the file into /public/audio/.

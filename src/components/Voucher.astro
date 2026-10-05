@@ -1,17 +1,28 @@
 ---
+import { site } from '../data/site';
 import { primaryAction } from '../lib/booking';
+import Illustration from './Illustration.astro';
 const order = primaryAction('Dárkový poukaz');
 ---
 <section class="section light" aria-labelledby="voucher-title">
   <div class="wrap inner">
     <div>
       <p class="eyebrow">Dárkový poukaz</p>
-      <h2 id="voucher-title">Darujte chvíli klidu</h2>
+      <h2 id="voucher-title">Darujte chvíli <em>klidu</em></h2>
       <p class="lead">Poukaz na masáž, meditaci nebo rituál objednáte jednoduše zprávou. Napište mi, komu a na co má být.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={order.href} {...(order.external ? { target: '_blank', rel: 'noopener' } : {})}>Objednat poukaz</a>
+        <a class="text-link" href="/poukaz">Jak to funguje</a>
+      </div>
     </div>
-    <div class="actions">
-      <a class="btn btn-primary" href={order.href} {...(order.external ? { target: '_blank', rel: 'noopener' } : {})}>Objednat poukaz</a>
-      <a class="text-link" href="/poukaz">Jak to funguje</a>
+
+    <div class="ticket" aria-hidden="true">
+      <div class="ticket-inner">
+        <Illustration name="sprig-wide" class="ticket-sprig" />
+        <p class="t-small">Dárkový poukaz</p>
+        <p class="t-name">{site.name}</p>
+        <p class="t-line">masáž · meditace · rituál</p>
+      </div>
     </div>
   </div>
 </section>
@@ -19,22 +30,80 @@ const order = primaryAction('Dárkový poukaz');
 <style>
   .inner {
     display: grid;
-    gap: 2rem;
-    align-items: end;
+    gap: 3.5rem;
+    align-items: center;
   }
-  @media (min-width: 52rem) {
+  @media (min-width: 56rem) {
     .inner {
-      grid-template-columns: 1fr auto;
-      gap: 4rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
     }
-  }
-  .lead {
-    margin-bottom: 0;
   }
   .actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.75rem 1.5rem;
+    margin-top: 2rem;
+  }
+  .ticket {
+    position: relative;
+    width: min(100%, 27rem);
+    margin-inline: auto;
+    aspect-ratio: 1.6;
+    padding: 0.9rem;
+    border-radius: 0.75rem;
+    background:
+      radial-gradient(70% 90% at 80% 10%, oklch(0.34 0.045 115), transparent 70%),
+      var(--green-900);
+    color: var(--on-dark);
+    rotate: -3deg;
+    box-shadow: 0 2rem 3.5rem -1.75rem oklch(0.2 0.03 140 / 0.6);
+    /* ticket notches */
+    mask: radial-gradient(circle at 0 50%, transparent 0.9rem, #000 0.95rem) left / 51% 100% no-repeat,
+      radial-gradient(circle at 100% 50%, transparent 0.9rem, #000 0.95rem) right / 51% 100% no-repeat;
+  }
+  .ticket-inner {
+    position: relative;
+    height: 100%;
+    border: 1px solid oklch(0.78 0.126 85 / 0.5);
+    border-radius: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .ticket :global(.ticket-sprig) {
+    position: absolute;
+    top: 0.5rem;
+    left: 50%;
+    width: 55%;
+    translate: -50% 0;
+    color: var(--gold);
+    opacity: 0.8;
+    --illo-fill: var(--green-900);
+  }
+  .ticket p {
+    margin: 0;
+  }
+  .t-small {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 2.5rem !important;
+  }
+  .t-name {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    line-height: 1.2;
+  }
+  .t-line {
+    font-size: 0.85rem;
+    color: var(--on-dark-soft);
+    letter-spacing: 0.08em;
   }
 </style>

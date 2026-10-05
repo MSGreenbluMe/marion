@@ -1,0 +1,111 @@
+---
+// Original line illustrations, drawn in SVG. They inherit `color` and keep a hairline stroke
+// at any size. Shapes that overlap are filled with --illo-fill (set it to the section ground).
+interface Props {
+  name: 'stones' | 'lotus' | 'moon' | 'candle' | 'sprig' | 'sprig-wide';
+  class?: string;
+  label?: string;
+}
+const { name, class: className, label } = Astro.props;
+
+// Botanical sprig: leaves placed along a cubic curve, alternating sides.
+function bez(t: number, p: number[][]) {
+  const u = 1 - t;
+  const x = u * u * u * p[0][0] + 3 * u * u * t * p[1][0] + 3 * u * t * t * p[2][0] + t * t * t * p[3][0];
+  const y = u * u * u * p[0][1] + 3 * u * u * t * p[1][1] + 3 * u * t * t * p[2][1] + t * t * t * p[3][1];
+  const dx = 3 * u * u * (p[1][0] - p[0][0]) + 6 * u * t * (p[2][0] - p[1][0]) + 3 * t * t * (p[3][0] - p[2][0]);
+  const dy = 3 * u * u * (p[1][1] - p[0][1]) + 6 * u * t * (p[2][1] - p[1][1]) + 3 * t * t * (p[3][1] - p[2][1]);
+  return { x, y, a: (Math.atan2(dy, dx) * 180) / Math.PI };
+}
+function sprig(p: number[][], count: number, size: number) {
+  const leaves = [];
+  for (let i = 0; i < count; i++) {
+    const t = 0.12 + (i / count) * 0.86;
+    const { x, y, a } = bez(t, p);
+    const side = i % 2 ? 1 : -1;
+    const s = size * (1 - t * 0.45);
+    leaves.push({ x, y, r: a + side * 48, s });
+  }
+  const tip = bez(1, p);
+  return { d: `M${p[0]} C${p[1]} ${p[2]} ${p[3]}`, leaves, tip };
+}
+const leaf = 'M0 0 C6 -7 18 -9 28 -3 C19 3 7 4 0 0 Z';
+const leafVein = 'M2 -0.5 C10 -3 18 -3.5 26 -3';
+const tall = sprig([[60, 236], [52, 170], [78, 96], [64, 8]], 11, 1.05);
+const wide = sprig([[4, 70], [60, 40], [130, 76], [236, 26]], 12, 0.95);
+const s = name === 'sprig-wide' ? wide : tall;
+
+const viewBox = name === 'sprig' ? '0 0 120 240' : name === 'sprig-wide' ? '0 0 240 100' : '0 0 120 120';
+const a11y = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': 'true' };
+---
+<svg class:list={['illo', className]} viewBox={viewBox} fill="none" stroke="currentColor" stroke-width="1.25"
+  stroke-linecap="round" stroke-linejoin="round" {...a11y}>
+  {name === 'stones' && (
+    <g>
+      <path d="M10 104 H110" opacity="0.5" />
+      <path d="M24 111 H96" opacity="0.3" />
+      <path d="M18 88 C18 76 38 70 60 70 C84 70 102 76 102 88 C102 99 84 104 60 104 C36 104 18 99 18 88 Z" fill="var(--illo-fill, none)" />
+      <path d="M30 63 C30 54 44 48 61 48 C77 48 90 54 90 63 C90 71 77 75 60 75 C44 75 30 71 30 63 Z" fill="var(--illo-fill, none)" />
+      <path d="M42 41 C42 33 50 28 60 28 C71 28 78 33 78 41 C78 48 70 51 60 51 C50 51 42 48 42 41 Z" fill="var(--illo-fill, none)" />
+      <path d="M50 22 C50 16 55 13 60 13 C66 13 70 16 70 22 C70 27 66 29 60 29 C54 29 50 27 50 22 Z" fill="var(--illo-fill, none)" />
+      <path d="M32 90 C40 95 52 97 62 96" opacity="0.45" />
+      <path d="M42 64 C48 68 58 69 66 68" opacity="0.45" />
+    </g>
+  )}
+  {name === 'lotus' && (
+    <g>
+      <path d="M60 86 C40 88 22 80 10 64 C28 60 46 68 60 86 Z" fill="var(--illo-fill, none)" />
+      <path d="M60 86 C80 88 98 80 110 64 C92 60 74 68 60 86 Z" fill="var(--illo-fill, none)" />
+      <path d="M60 86 C44 78 32 62 30 42 C46 48 58 64 60 86 Z" fill="var(--illo-fill, none)" />
+      <path d="M60 86 C76 78 88 62 90 42 C74 48 62 64 60 86 Z" fill="var(--illo-fill, none)" />
+      <path d="M60 86 C49 72 47 50 60 26 C73 50 71 72 60 86 Z" fill="var(--illo-fill, none)" />
+      <path d="M60 80 V40" opacity="0.4" />
+      <path d="M22 98 H98" opacity="0.6" />
+      <path d="M36 106 H84" opacity="0.4" />
+      <path d="M48 113 H72" opacity="0.25" />
+    </g>
+  )}
+  {name === 'moon' && (
+    <g>
+      <circle cx="60" cy="60" r="50" opacity="0.25" stroke-dasharray="1 5" />
+      <path d="M70 24 A38 38 0 1 0 70 96 A30 30 0 1 1 70 24 Z" fill="var(--illo-fill, none)" />
+      <path d="M95 26 L97 33 L104 35 L97 37 L95 44 L93 37 L86 35 L93 33 Z" />
+      <path d="M102 62 L103 66 L107 67 L103 68 L102 72 L101 68 L97 67 L101 66 Z" opacity="0.7" />
+      <circle cx="88" cy="84" r="1.3" fill="currentColor" stroke="none" />
+      <circle cx="18" cy="30" r="1" fill="currentColor" stroke="none" opacity="0.6" />
+    </g>
+  )}
+  {name === 'candle' && (
+    <g>
+      <path d="M60 18 C67 29 70 37 60 48 C50 37 53 29 60 18 Z" />
+      <path d="M60 30 C63 35 64 39 60 44 C56 39 57 35 60 30 Z" opacity="0.6" />
+      <path d="M60 48 V56" />
+      <path d="M44 58 C44 55 76 55 76 58 V104 C76 107 44 107 44 104 Z" fill="var(--illo-fill, none)" />
+      <path d="M44 60 C48 63 54 61 56 66 C57 70 59 70 60 64 C62 60 70 63 76 60" opacity="0.55" />
+      <path d="M28 106 C28 102 92 102 92 106 C92 112 28 112 28 106 Z" fill="var(--illo-fill, none)" />
+    </g>
+  )}
+  {(name === 'sprig' || name === 'sprig-wide') && (
+    <g>
+      <path d={s.d} />
+      {s.leaves.map((l) => (
+        <g transform={`translate(${l.x.toFixed(1)} ${l.y.toFixed(1)}) rotate(${l.r.toFixed(1)}) scale(${l.s.toFixed(2)})`}>
+          <path d={leaf} fill="var(--illo-fill, none)" />
+          <path d={leafVein} opacity="0.5" />
+        </g>
+      ))}
+      <circle cx={s.tip.x} cy={s.tip.y} r="2.2" fill="currentColor" stroke="none" />
+    </g>
+  )}
+</svg>
+
+<style>
+  .illo {
+    display: block;
+    overflow: visible;
+  }
+  .illo :global(path),
+  .illo :global(circle) {
+    vector-effect: non-scaling-stroke;
+  }
+</style>

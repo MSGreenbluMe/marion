@@ -3,6 +3,7 @@ import { upcomingEvents } from '../lib/events';
 import { findService, serviceUrl } from '../data/services';
 import { czDate, kc } from '../lib/format';
 import { primaryAction } from '../lib/booking';
+import Illustration from './Illustration.astro';
 
 interface Props {
   limit?: number;
@@ -49,6 +50,7 @@ const contact = primaryAction();
   </ol>
 ) : (
   <div class="empty">
+    <Illustration name="moon" class="moon" />
     <p>Nové termíny připravuji. Napište mi a dám vám vědět.</p>
     <a class="text-link" href={contact.href} {...(contact.external ? { target: '_blank', rel: 'noopener' } : {})}>
       {contact.label}
@@ -120,12 +122,20 @@ const contact = primaryAction();
     font-size: 0.95rem;
   }
   .empty {
-    padding: 2.5rem;
+    padding: 3rem 1.5rem;
     border: 1px solid var(--line-dark);
+    border-radius: 0.5rem;
     text-align: center;
+    background: radial-gradient(60% 80% at 50% 0%, oklch(0.78 0.126 85 / 0.06), transparent 70%);
+  }
+  .empty :global(.moon) {
+    width: 5rem;
+    margin: 0 auto 1.25rem;
+    color: var(--gold);
   }
   .empty p {
     font-family: var(--font-display);
+    font-weight: 300;
     font-size: 1.6rem;
     line-height: 1.35;
     margin-bottom: 0.75rem;

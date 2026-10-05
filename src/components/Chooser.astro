@@ -3,6 +3,7 @@
 import { chooser } from '../data/chooser';
 import { findService } from '../data/services';
 import ServiceCard from './ServiceCard.astro';
+import Illustration from './Illustration.astro';
 
 const states = chooser.map((s) => ({
   ...s,
@@ -16,10 +17,13 @@ const panelCss =
     .join(',') + '{display:block}';
 ---
 <section class="section light chooser" id="jak-se-citite" aria-labelledby="chooser-title">
+  <Illustration name="sprig-wide" class="decor" />
   <div class="wrap">
-    <p class="eyebrow">Moje nabídka</p>
-    <h2 id="chooser-title">Jak se dnes cítíte?</h2>
-    <p class="lead">Vyberte, co je vám teď nejblíž. Ukážu vám, co by vám mohlo pomoci.</p>
+    <div class="center">
+      <p class="eyebrow">Na začátek</p>
+      <h2 id="chooser-title">Jak se dnes <em>cítíte?</em></h2>
+      <p class="lead">Vyberte, co je vám teď nejblíž. Ukážu vám, co by vám mohlo pomoci.</p>
+    </div>
 
     <fieldset class="chips">
       <legend class="sr-only">Jak se dnes cítíte?</legend>
@@ -32,6 +36,10 @@ const panelCss =
     </fieldset>
 
     <div class="panels" aria-live="polite">
+      <div class="hint">
+        <Illustration name="lotus" class="hint-icon" />
+        <p>Vyberte jednu z možností výše.</p>
+      </div>
       {states.map((s) => (
         <div class="panel" data-state={s.id}>
           <div class="cards">
@@ -41,35 +49,50 @@ const panelCss =
       ))}
     </div>
 
-    <p class="self">
+    <p class="self center">
       <a class="text-link" href="#nabidka">Chci si vybrat sama</a>
     </p>
   </div>
 </section>
 
 <style>
+  .chooser {
+    overflow: hidden;
+  }
+  .chooser :global(.decor) {
+    position: absolute;
+    top: 2.5rem;
+    right: -3rem;
+    width: min(22rem, 60vw);
+    color: var(--sage);
+    opacity: 0.55;
+    rotate: 8deg;
+    pointer-events: none;
+  }
   .chips {
     border: 0;
-    margin: 3rem 0 0;
+    margin: 2.75rem auto 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0.75rem;
+    max-width: 52rem;
   }
   .chip label {
     display: inline-flex;
     align-items: center;
-    min-height: 48px;
-    padding: 0.5rem 1.35rem;
+    min-height: 50px;
+    padding: 0.5rem 1.5rem;
     border: 1px solid var(--line-light);
     border-radius: 999px;
     cursor: pointer;
     font-size: 1rem;
-    transition: border-color 0.25s ease, background-color 0.25s ease;
-    background: var(--paper);
+    background: oklch(1 0 0 / 0.55);
+    transition: border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease;
   }
   .chip label:hover {
-    border-color: var(--ink-soft);
+    border-color: var(--gold-deep);
   }
   .chip input:focus-visible + label {
     outline: 2px solid var(--gold-deep);
@@ -81,16 +104,38 @@ const panelCss =
     color: var(--paper);
   }
   .panels {
-    margin-top: 2.5rem;
+    margin: 2.75rem auto 0;
+    max-width: 52rem;
   }
   .panel {
+    display: none;
+  }
+  .hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 2.5rem 1rem;
+    border: 1px dashed var(--line-light);
+    border-radius: 0.5rem;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  .hint p {
+    margin: 0;
+  }
+  .hint :global(.hint-icon) {
+    width: 4rem;
+    color: var(--gold-deep);
+    --illo-fill: var(--paper);
+  }
+  .chooser:has(input:checked) .hint {
     display: none;
   }
   .cards {
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-    max-width: 52rem;
   }
   .self {
     margin: 2rem 0 0;

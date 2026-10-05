@@ -37,6 +37,8 @@ export interface Service {
 export interface Category {
   id: CategoryId;
   name: string;
+  /** Line illustration used for this category. */
+  illustration: 'stones' | 'lotus' | 'moon';
   /** Short intro on the category page. Optional. */
   intro: string;
   metaDescription: string;
@@ -64,6 +66,7 @@ const meditation = (length: string, price: number): PriceOption[] => [{ label: l
 export const categories: Category[] = [
   {
     id: 'masaze',
+    illustration: 'stones',
     name: 'Masáže',
     intro: 'Vyberte si dotek, který právě teď potřebujete — od jemné relaxace po hlubokou regeneraci.',
     metaDescription:
@@ -94,6 +97,7 @@ export const categories: Category[] = [
   },
   {
     id: 'meditace',
+    illustration: 'lotus',
     name: 'Meditace',
     intro: 'Najděte cestu k vnitřnímu klidu skrze dech, zvuk, pohyb nebo sdílený kruh.',
     metaDescription:
@@ -125,6 +129,7 @@ export const categories: Category[] = [
   },
   {
     id: 'ritualy',
+    illustration: 'moon',
     name: 'Rituály',
     intro: 'Citlivě vedená setkání a rituály pro důležité životní okamžiky a vnitřní proměnu.',
     metaDescription:

@@ -3,6 +3,7 @@ import type { Category, Service } from '../data/services';
 import { serviceUrl } from '../data/services';
 import { fromPrice, lengthSummary } from '../lib/format';
 import { primaryAction } from '../lib/booking';
+import Illustration from './Illustration.astro';
 
 interface Props {
   service: Service;
@@ -14,6 +15,7 @@ const firstOption = service.options[0]?.label;
 const book = primaryAction(service.name, service.options.length > 1 ? undefined : firstOption);
 ---
 <article class="card">
+  <Illustration name={category.illustration} class="mark" />
   <p class="cat">{category.name}</p>
   <h3><a href={serviceUrl(category.id, service.slug)}>{service.name}</a></h3>
   {service.summary && <p class="summary">{service.summary}</p>}
@@ -29,11 +31,23 @@ const book = primaryAction(service.name, service.options.length > 1 ? undefined 
 
 <style>
   .card {
+    position: relative;
     padding: 1.75rem;
     border: 1px solid var(--line-light);
+    border-radius: 0.5rem;
     background: var(--paper);
     display: flex;
     flex-direction: column;
+    box-shadow: 0 1.25rem 2.5rem -2rem oklch(0.3 0.03 100 / 0.4);
+  }
+  .card :global(.mark) {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 3.25rem;
+    color: var(--gold-deep);
+    opacity: 0.8;
+    --illo-fill: var(--paper);
   }
   .cat {
     font-size: 0.75rem;
@@ -44,6 +58,7 @@ const book = primaryAction(service.name, service.options.length > 1 ? undefined 
   }
   h3 {
     margin-bottom: 0.5rem;
+    padding-right: 3.5rem;
   }
   h3 a {
     text-decoration: none;

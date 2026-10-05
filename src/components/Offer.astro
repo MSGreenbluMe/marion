@@ -1,0 +1,122 @@
+---
+import { categories, serviceUrl } from '../data/services';
+import { fromPrice } from '../lib/format';
+import Illustration from './Illustration.astro';
+---
+<section class="section light-2" id="nabidka" aria-labelledby="offer-title">
+  <div class="wrap">
+    <div class="head center">
+      <p class="eyebrow">Moje nabídka</p>
+      <h2 id="offer-title">Masáže, meditace <em>a rituály</em></h2>
+      <p class="lead">Vyberte si péči, která vás právě teď nejlépe podpoří na cestě k rovnováze.</p>
+    </div>
+
+    <div class="cards">
+      {categories.map((c) => (
+        <article class="card">
+          <a class="top arch" href={`/${c.id}`} tabindex="-1" aria-hidden="true">
+            <Illustration name={c.illustration} class="icon" />
+            <span class="arch-line"></span>
+          </a>
+          <div class="body">
+            <h3><a href={`/${c.id}`}>{c.name}</a></h3>
+            {c.intro && <p class="intro">{c.intro}</p>}
+            <ul>
+              {c.services.map((s) => (
+                <li>
+                  <a href={serviceUrl(c.id, s.slug)}>
+                    <span class="name">{s.name}</span>
+                    <span class="price">{fromPrice(s)}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .head {
+    margin-bottom: 3.5rem;
+  }
+  .cards {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    align-items: start;
+  }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line-light);
+    border-radius: 999px 999px 0.5rem 0.5rem;
+    padding: 0.75rem 0.75rem 0;
+    box-shadow: 0 1.5rem 3rem -2rem oklch(0.3 0.03 100 / 0.35);
+  }
+  .top {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 0.82;
+    background:
+      radial-gradient(60% 50% at 50% 60%, oklch(0.32 0.04 120), transparent 75%),
+      linear-gradient(180deg, var(--green-800), var(--green-900));
+    color: var(--gold);
+    --illo-fill: oklch(0.27 0.035 135);
+  }
+  .top :global(.icon) {
+    width: 46%;
+    margin-top: 12%;
+    transition: transform 0.6s ease;
+  }
+  .card:hover .top :global(.icon) {
+    transform: translateY(-4px);
+  }
+  .body {
+    padding: 1.75rem 1.25rem 1.25rem;
+  }
+  h3 {
+    font-size: 1.9rem;
+    margin-bottom: 0.5rem;
+  }
+  h3 a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: none;
+  }
+  h3 a:hover {
+    color: var(--gold-deep);
+  }
+  .intro {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+  ul {
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+  }
+  li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    min-height: 46px;
+    padding: 0.6rem 0;
+    border-top: 1px solid var(--line-light);
+    text-decoration: none;
+    font-size: 0.98rem;
+    line-height: 1.4;
+  }
+  li a:hover .name {
+    color: var(--gold-deep);
+  }
+  .price {
+    white-space: nowrap;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+  }
+</style>

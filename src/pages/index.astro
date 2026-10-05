@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Chooser from '../components/Chooser.astro';
-import FullMenu from '../components/FullMenu.astro';
+import Offer from '../components/Offer.astro';
+import Illustration from '../components/Illustration.astro';
 import About from '../components/About.astro';
 import EventList from '../components/EventList.astro';
 import Voucher from '../components/Voucher.astro';
@@ -16,12 +17,13 @@ import { site } from '../data/site';
 >
   <Hero />
   <Chooser />
-  <FullMenu />
+  <Offer />
   <About />
-  <section class="section dark-2" aria-labelledby="dates-title">
+  <section class="section dark-2 dates-section" aria-labelledby="dates-title">
+    <Illustration name="sprig" class="dates-decor" />
     <div class="wrap">
       <p class="eyebrow">Skupinová setkání</p>
-      <h2 id="dates-title">Nejbližší termíny</h2>
+      <h2 id="dates-title">Nejbližší <em>termíny</em></h2>
       <p class="lead">Meditace, ženské kruhy, konstelace a OM Chanting probíhají ve skupině.</p>
       <div class="dates"><EventList limit={3} /></div>
       <p><a class="text-link" href="/terminy">Všechny termíny</a></p>
@@ -33,6 +35,19 @@ import { site } from '../data/site';
 </Base>
 
 <style>
+  .dates-section {
+    overflow: hidden;
+  }
+  .dates-section :global(.dates-decor) {
+    position: absolute;
+    right: 4%;
+    top: -2rem;
+    width: 7rem;
+    color: var(--gold);
+    opacity: 0.35;
+    rotate: 200deg;
+    pointer-events: none;
+  }
   .dates {
     margin: 3rem 0 1.5rem;
   }

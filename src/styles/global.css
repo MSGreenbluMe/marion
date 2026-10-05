@@ -16,7 +16,7 @@
   --line-dark: oklch(0.36 0.03 148 / 0.7);
   --line-light: oklch(0.82 0.02 85);
 
-  --font-display: 'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --font-text: 'Jost', 'Segoe UI', system-ui, sans-serif;
 
   --space-section: clamp(5rem, 12vw, 9.5rem);
@@ -25,6 +25,9 @@
   --gutter: clamp(1rem, 4vw, 2.5rem);
   --radius: 2px;
   --bar-h: 4.5rem;
+  --sage: oklch(0.62 0.045 150);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  --illo-fill: var(--green-900);
 }
 
 *,
@@ -47,7 +50,8 @@ html {
 
 body {
   margin: 0;
-  background: var(--green-900);
+  background: var(--grain) repeat, var(--green-900);
+  background-size: 160px, auto;
   color: var(--on-dark);
   font-family: var(--font-text);
   font-weight: 300;
@@ -72,23 +76,33 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: 0.005em;
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  font-variation-settings: 'SOFT' 100;
   margin: 0 0 0.6em;
   text-wrap: pretty;
 }
 
 h1 {
-  font-size: clamp(2.6rem, 7vw, 4.6rem);
-  font-weight: 300;
+  font-size: clamp(2.5rem, 6.4vw, 4.4rem);
 }
 h2 {
-  font-size: clamp(2rem, 4.6vw, 3rem);
-  font-weight: 300;
+  font-size: clamp(1.9rem, 4.2vw, 2.9rem);
 }
 h3 {
-  font-size: 1.6rem;
+  font-size: 1.45rem;
+}
+h1 em,
+h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+.light h1 em,
+.light h2 em,
+.light-2 h1 em,
+.light-2 h2 em {
+  color: var(--gold-deep);
 }
 
 p {
@@ -122,15 +136,81 @@ a {
 }
 
 .light {
-  background: var(--paper);
+  background: var(--grain) repeat, var(--paper);
+  background-size: 160px, auto;
   color: var(--ink);
+  --illo-fill: var(--paper);
 }
 .light-2 {
-  background: var(--paper-2);
+  background: var(--grain) repeat, var(--paper-2);
+  background-size: 160px, auto;
   color: var(--ink);
+  --illo-fill: var(--paper-2);
 }
 .dark-2 {
-  background: var(--green-950);
+  background: var(--grain) repeat, var(--green-950);
+  background-size: 160px, auto;
+  --illo-fill: var(--green-950);
+}
+.section {
+  position: relative;
+}
+
+/* Eyebrow with a small gold rule in front */
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 1.75rem;
+  height: 1px;
+  margin-right: 0.85rem;
+  vertical-align: middle;
+  background: currentColor;
+  opacity: 0.7;
+}
+.center {
+  text-align: center;
+}
+.center .lead {
+  margin-inline: auto;
+}
+
+/* Arch frame: the studio's recurring shape */
+.arch {
+  position: relative;
+  border-radius: 999px 999px 0.5rem 0.5rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+.arch-line {
+  position: absolute;
+  inset: 0.65rem;
+  border: 1px solid oklch(0.78 0.126 85 / 0.45);
+  border-radius: 999px 999px 0.25rem 0.25rem;
+  pointer-events: none;
+}
+
+/* Ornament between headline and text */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--gold);
+  margin: 0 0 2rem;
+}
+.ornament::before,
+.ornament::after {
+  content: '';
+  height: 1px;
+  width: 2.5rem;
+  background: currentColor;
+  opacity: 0.6;
+}
+.center .ornament {
+  justify-content: center;
+}
+.light .ornament,
+.light-2 .ornament {
+  color: var(--gold-deep);
 }
 
 .eyebrow {

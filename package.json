@@ -10,7 +10,7 @@
     "og": "node scripts/make-images.mjs"
   },
   "dependencies": {
-    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/fraunces": "^5.3.0",
     "@fontsource/jost": "^5.3.0",
     "astro": "^7.3.5"
   }
