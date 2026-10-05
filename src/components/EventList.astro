@@ -1,0 +1,133 @@
+---
+import { upcomingEvents } from '../lib/events';
+import { findService, serviceUrl } from '../data/services';
+import { czDate, kc } from '../lib/format';
+import { primaryAction } from '../lib/booking';
+
+interface Props {
+  limit?: number;
+}
+const { limit } = Astro.props;
+const list = upcomingEvents(limit);
+const contact = primaryAction();
+---
+{list.length ? (
+  <ol class="events">
+    {list.map((e) => {
+      const d = czDate(e.date);
+      const match = e.service ? findService(e.service) : undefined;
+      const full = e.spotsLeft === 0;
+      const book = primaryAction(e.title, `${d.day}. ${d.month} v ${e.time}`);
+      return (
+        <li class="event">
+          <time class="date" datetime={`${e.date}T${e.time}`}>
+            <span class="day">{d.day}.</span>
+            <span class="month">{d.month}</span>
+            <span class="weekday">{d.weekday}</span>
+          </time>
+          <div class="body">
+            <h3>
+              {match ? <a href={serviceUrl(match.category.id, match.service.slug)}>{e.title}</a> : e.title}
+            </h3>
+            <p class="meta">
+              <span>{e.time}{e.endTime && `–${e.endTime}`}</span>
+              {e.price !== undefined && <span>{kc(e.price)}</span>}
+              {e.spotsLeft !== undefined && (
+                <span>{full ? 'Obsazeno' : `Volná místa: ${e.spotsLeft}`}</span>
+              )}
+            </p>
+            {e.note && <p class="note">{e.note}</p>}
+          </div>
+          {!full && (
+            <a class="btn btn-quiet" href={book.href} {...(book.external ? { target: '_blank', rel: 'noopener' } : {})}>
+              Přihlásit se
+            </a>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+) : (
+  <div class="empty">
+    <p>Nové termíny připravuji. Napište mi a dám vám vědět.</p>
+    <a class="text-link" href={contact.href} {...(contact.external ? { target: '_blank', rel: 'noopener' } : {})}>
+      {contact.label}
+    </a>
+  </div>
+)}
+
+<style>
+  .events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line-dark);
+  }
+  .event {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0.5rem 1.5rem;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .event .btn {
+    grid-column: 2;
+    justify-self: start;
+  }
+  @media (min-width: 40rem) {
+    .event {
+      grid-template-columns: 6.5rem 1fr auto;
+    }
+    .event .btn {
+      grid-column: auto;
+    }
+  }
+  .date {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+  .day {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    color: var(--gold);
+  }
+  .month,
+  .weekday {
+    font-size: 0.85rem;
+    color: var(--on-dark-soft);
+  }
+  h3 {
+    font-size: 1.5rem;
+    margin: 0 0 0.25rem;
+  }
+  h3 a {
+    text-decoration: none;
+  }
+  h3 a:hover {
+    text-decoration: underline;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.25rem;
+    margin: 0;
+    color: var(--on-dark-soft);
+  }
+  .note {
+    margin: 0.25rem 0 0;
+    font-size: 0.95rem;
+  }
+  .empty {
+    padding: 2.5rem;
+    border: 1px solid var(--line-dark);
+    text-align: center;
+  }
+  .empty p {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
+  }
+</style>

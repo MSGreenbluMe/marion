@@ -1,0 +1,33 @@
+# Studio Marion
+
+Static website for Studio Marion (Hradec Králové), built with [Astro](https://astro.build).
+No backend, no CMS, no cookies, no third-party requests. Deploys to any static host (upload `dist/`).
+
+## Run locally
+
+```sh
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # writes dist/
+npm run preview  # serves dist/
+```
+
+## Editing content (no coding needed)
+
+Everything on the site comes from the files in `src/data/`:
+
+| File | What it holds |
+|---|---|
+| `site.ts` | Contact, address, booking channel, "O mně" text, legal details, voucher facts |
+| `services.ts` | All services, prices and service texts |
+| `chooser.ts` | "Jak se dnes cítíte?" — feeling → suggested services |
+| `events.ts` | Upcoming group dates (past ones disappear on the next build) |
+| `reviews.ts` | Real reviews with a named source |
+
+Empty values are hidden on the site. Missing owner input is listed in `CONTENT_TODO.md`.
+
+**Booking:** set `site.booking.bookingUrl` to switch every booking button to an online booking system.
+Otherwise `site.booking.channel` picks `whatsapp`, `sms` or `phone`.
+
+**Images:** put files in `public/images/` (portrait) or `public/audio/` (greeting) and set the path in `site.ts`.
+`npm run og` regenerates `public/og.png` and the icons with the local Chromium.

@@ -1,0 +1,103 @@
+---
+import { site } from '../data/site';
+import { telHref } from '../lib/booking';
+
+const { contact, legal } = site;
+const hasLegal = legal.fullName || legal.ico || legal.registeredAddress;
+---
+<footer class="footer">
+  <div class="wrap grid">
+    <div>
+      <p class="brand">{site.name}</p>
+      <p class="muted">
+        {contact.street}<br />
+        {contact.postalCode} {contact.city}
+      </p>
+    </div>
+    <div>
+      <p class="muted">
+        <a href={telHref()}>{contact.phoneDisplay}</a>
+        {contact.email && (<><br /><a href={`mailto:${contact.email}`}>{contact.email}</a></>)}
+        <br />{contact.openingNote}
+      </p>
+    </div>
+    <div>
+      <ul class="links">
+        <li><a href="/masaze">Masáže</a></li>
+        <li><a href="/meditace">Meditace</a></li>
+        <li><a href="/ritualy">Rituály</a></li>
+        <li><a href="/terminy">Termíny</a></li>
+        <li><a href="/poukaz">Dárkový poukaz</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap legal">
+    {hasLegal && (
+      <p>
+        Provozovatel: {[legal.fullName, legal.ico && `IČO ${legal.ico}`, legal.registeredAddress].filter(Boolean).join(', ')}
+      </p>
+    )}
+    <p>
+      <a href="/ochrana-osobnich-udaju">Ochrana osobních údajů</a>
+      <span aria-hidden="true"> · </span>
+      Web nepoužívá cookies.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--green-950);
+    border-top: 1px solid var(--line-dark);
+    padding-block: 4rem 2rem;
+    font-size: 0.95rem;
+  }
+  .grid {
+    display: grid;
+    gap: 1.5rem 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    margin-bottom: 0.6rem;
+  }
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--gold);
+  }
+  .muted a {
+    display: inline-block;
+    padding-block: 0.6rem;
+    margin-block: -0.6rem;
+  }
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .legal {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-dark);
+    font-size: 0.85rem;
+    color: var(--on-dark-soft);
+  }
+  .legal p {
+    margin: 0.25rem 0;
+  }
+  .legal a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+  }
+</style>

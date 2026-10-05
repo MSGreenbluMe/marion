@@ -1,0 +1,244 @@
+---
+import Base from '../../../layouts/Base.astro';
+import BookingActions from '../../../components/BookingActions.astro';
+import { categories, serviceUrl, type Category, type Service } from '../../../data/services';
+import { fromPrice, lengthSummary, optionPrice } from '../../../lib/format';
+import { primaryAction } from '../../../lib/booking';
+
+export function getStaticPaths() {
+  return categories.flatMap((category) =>
+    category.services.map((service) => ({
+      params: { category: category.id, slug: service.slug },
+      props: { category, service },
+    })),
+  );
+}
+const { category, service } = Astro.props as { category: Category; service: Service };
+
+const firstOption = service.options[0]?.label;
+const optionHrefs = service.options.map((o) => primaryAction(service.name, o.label).href);
+
+const blocks = [
+  { title: 'Pro koho je', text: service.forWhom },
+  { title: 'Jak probíhá', text: service.howItGoes },
+  { title: 'Co si vzít s sebou', text: service.whatToBring },
+  { title: 'Pro koho není vhodná', text: service.notSuitableFor },
+].filter((b) => b.text);
+
+const length = lengthSummary(service);
+const description = service.description
+  ? service.description.slice(0, 155).replace(/\s+\S*$/, '') + (service.description.length > 155 ? '…' : '')
+  : `${service.name} v Hradci Králové${length ? `, ${length}` : ''}, ${fromPrice(service)}. Objednání zprávou nebo telefonem.`;
+
+const siblings = category.services.filter((s) => s.slug !== service.slug);
+---
+<Base title={service.name} description={description} bookingService={service.name} bookingOption={firstOption}>
+  <article class="section">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Drobečková navigace">
+        <a href={`/${category.id}`}>{category.name}</a>
+      </nav>
+
+      <div class="layout">
+        <div class="content">
+          <h1>{service.name}</h1>
+          {service.summary && <p class="lead">{service.summary}</p>}
+          {service.description && service.description.split(/\n\s*\n/).map((p) => <p>{p}</p>)}
+          {service.benefits.length > 0 && (
+            <ul class="benefits">
+              {service.benefits.map((b) => <li>{b}</li>)}
+            </ul>
+          )}
+
+          {blocks.map((b) => (
+            <section class="block">
+              <h2>{b.title}</h2>
+              {b.text.split(/\n\s*\n/).map((p) => <p>{p}</p>)}
+            </section>
+          ))}
+        </div>
+
+        <aside class="book" aria-labelledby="book-title">
+          <h2 id="book-title" class="book-title">Cena a objednání</h2>
+          {service.options.length > 1 ? (
+            <fieldset class="options">
+              <legend class="sr-only">Vyberte délku nebo variantu</legend>
+              {service.options.map((o, i) => (
+                <label class="option">
+                  <input type="radio" name="option" value={o.label} data-href={optionHrefs[i]} checked={i === 0} />
+                  <span class="opt-label">{o.label}</span>
+                  <span class="opt-price">{optionPrice(o)}</span>
+                </label>
+              ))}
+            </fieldset>
+          ) : service.options.length === 1 ? (
+            <p class="option single">
+              <span class="opt-label">{service.options[0].label}</span>
+              <span class="opt-price">{optionPrice(service.options[0])}</span>
+            </p>
+          ) : (
+            <p class="option single"><span class="opt-label">{service.priceNote}</span></p>
+          )}
+          <BookingActions service={service.name} option={firstOption} />
+        </aside>
+      </div>
+
+      {siblings.length > 0 && (
+        <nav class="more" aria-labelledby="more-title">
+          <h2 id="more-title" class="eyebrow">Další {category.name.toLowerCase()}</h2>
+          <ul>
+            {siblings.map((s) => (
+              <li><a href={serviceUrl(category.id, s.slug)}>{s.name}</a></li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </div>
+  </article>
+</Base>
+
+<script>
+  // Carry the selected length into every booking link on the page (incl. the mobile bar).
+  const radios = document.querySelectorAll<HTMLInputElement>('input[name="option"][data-href]');
+  const update = () => {
+    const checked = document.querySelector<HTMLInputElement>('input[name="option"]:checked');
+    if (!checked?.dataset.href) return;
+    document.querySelectorAll<HTMLAnchorElement>('[data-book-primary]').forEach((a) => {
+      a.href = checked.dataset.href!;
+    });
+  };
+  radios.forEach((r) => r.addEventListener('change', update));
+  update();
+</script>
+
+<style>
+  .crumbs {
+    margin-bottom: 1.5rem;
+  }
+  .crumbs a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .crumbs a::before {
+    content: '←';
+    margin-right: 0.6em;
+  }
+  .layout {
+    display: grid;
+    gap: 3.5rem;
+  }
+  @media (min-width: 58rem) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr) 22rem;
+      gap: 6rem;
+      align-items: start;
+    }
+    .book {
+      position: sticky;
+      top: 2rem;
+    }
+  }
+  .content {
+    max-width: var(--measure);
+    font-size: 1.125rem;
+  }
+  .benefits {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+  .benefits li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.6rem;
+  }
+  .benefits li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.85em;
+    width: 0.8rem;
+    height: 1px;
+    background: var(--gold);
+  }
+  .block {
+    margin-top: 3rem;
+  }
+  .block h2 {
+    font-size: 1.75rem;
+  }
+  .book {
+    padding: 2rem;
+    border: 1px solid var(--line-dark);
+    background: var(--green-950);
+  }
+  .book-title {
+    font-family: var(--font-text);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+  }
+  .options {
+    border: 0;
+    padding: 0;
+    margin: 0 0 1.75rem;
+  }
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    min-height: 52px;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--line-dark);
+    margin: 0;
+  }
+  label.option {
+    cursor: pointer;
+  }
+  .single {
+    margin-bottom: 1.75rem;
+  }
+  .option input {
+    accent-color: var(--gold);
+    width: 1.15rem;
+    height: 1.15rem;
+    margin: 0;
+  }
+  .opt-label {
+    flex: 1;
+  }
+  .opt-price {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    white-space: nowrap;
+  }
+  .more {
+    margin-top: var(--space-section);
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line-dark);
+  }
+  .more ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 2rem;
+  }
+  .more a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: none;
+  }
+  .more a:hover {
+    color: var(--gold);
+  }
+</style>

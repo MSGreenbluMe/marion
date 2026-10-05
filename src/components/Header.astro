@@ -1,0 +1,146 @@
+---
+import { site } from '../data/site';
+import { telHref } from '../lib/booking';
+
+const path = Astro.url.pathname.replace(/\.html$/, '');
+const nav = [
+  { href: '/masaze', label: 'Masáže' },
+  { href: '/meditace', label: 'Meditace' },
+  { href: '/ritualy', label: 'Rituály' },
+  { href: '/terminy', label: 'Termíny' },
+  { href: '/poukaz', label: 'Poukaz' },
+  { href: '/#kontakt', label: 'Kontakt' },
+];
+const isCurrent = (href: string) =>
+  href !== '/#kontakt' && (path === href || path.startsWith(`/sluzba${href}/`));
+---
+<header class="header">
+  <div class="wrap inner">
+    <a class="brand" href="/">{site.name}</a>
+
+    <nav class="nav-desktop" aria-label="Hlavní navigace">
+      <ul>
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+      <a class="phone" href={telHref()}>{site.contact.phoneDisplay}</a>
+    </nav>
+
+    <details class="nav-mobile">
+      <summary>Menu</summary>
+      <nav aria-label="Hlavní navigace">
+        <ul>
+          {nav.map((n) => (
+            <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: relative;
+    z-index: 20;
+    border-bottom: 1px solid var(--line-dark);
+    background: var(--green-900);
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 4.75rem;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    color: var(--on-dark);
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  a[aria-current='page'] {
+    color: var(--gold);
+  }
+  .nav-desktop {
+    display: none;
+    align-items: center;
+    gap: 2.25rem;
+  }
+  .nav-desktop ul {
+    display: flex;
+    gap: 1.6rem;
+  }
+  .nav-desktop a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: none;
+    font-size: 0.92rem;
+    letter-spacing: 0.06em;
+  }
+  .nav-desktop ul a:hover {
+    color: var(--gold);
+  }
+  .phone {
+    color: var(--on-dark-soft);
+    padding-left: 2rem;
+    border-left: 1px solid var(--line-dark);
+    white-space: nowrap;
+  }
+  .nav-mobile summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0 0.25rem;
+    cursor: pointer;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+  .nav-mobile summary::-webkit-details-marker {
+    display: none;
+  }
+  .nav-mobile[open] summary {
+    color: var(--gold);
+  }
+  .nav-mobile nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--green-950);
+    border-bottom: 1px solid var(--line-dark);
+    padding: 0.5rem var(--gutter) 1.25rem;
+  }
+  .nav-mobile a {
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-dark);
+  }
+  @media (min-width: 62rem) {
+    .nav-desktop {
+      display: flex;
+    }
+    .nav-mobile {
+      display: none;
+    }
+  }
+</style>

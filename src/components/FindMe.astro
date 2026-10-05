@@ -1,0 +1,102 @@
+---
+import { site, mapsLink } from '../data/site';
+import BookingActions from './BookingActions.astro';
+const c = site.contact;
+---
+<section class="section" id="kontakt" aria-labelledby="find-title">
+  <div class="wrap">
+    <p class="eyebrow">Kontakt</p>
+    <h2 id="find-title">Kde mě najdete</h2>
+    <div class="grid">
+      <div class="place">
+        <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="0.75" />
+          <circle cx="24" cy="24" r="13" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6" />
+          <circle cx="24" cy="24" r="3" fill="currentColor" />
+        </svg>
+        <address>
+          <span class="street">{c.street}</span>
+          <span>{c.postalCode} {c.city}</span>
+        </address>
+        <dl>
+          {c.floorAndDoorbell && (<><dt>Vchod</dt><dd>{c.floorAndDoorbell}</dd></>)}
+          {c.parking && (<><dt>Parkování</dt><dd>{c.parking}</dd></>)}
+        </dl>
+        <a class="text-link" href={mapsLink()} target="_blank" rel="noopener">Otevřít v Mapách</a>
+      </div>
+      <div class="reach">
+        <dl>
+          <dt>Telefon</dt>
+          <dd><a href={`tel:${c.phoneE164}`}>{c.phoneDisplay}</a></dd>
+          {c.email && (<><dt>E-mail</dt><dd><a href={`mailto:${c.email}`}>{c.email}</a></dd></>)}
+          <dt>Kdy</dt>
+          <dd>{c.openingNote}</dd>
+        </dl>
+        <BookingActions />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 2.5rem;
+    margin-top: 3rem;
+  }
+  @media (min-width: 52rem) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+  .place {
+    padding: 2.5rem;
+    border: 1px solid var(--line-dark);
+    background:
+      repeating-linear-gradient(90deg, transparent 0 47px, oklch(0.36 0.03 148 / 0.25) 47px 48px),
+      repeating-linear-gradient(0deg, transparent 0 47px, oklch(0.36 0.03 148 / 0.25) 47px 48px),
+      var(--green-950);
+  }
+  .mark {
+    width: 3rem;
+    height: 3rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  address {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+  .street {
+    font-size: 2rem;
+  }
+  dl {
+    margin: 0 0 1.5rem;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.4rem 1.5rem;
+  }
+  dt {
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--on-dark-soft);
+    padding-top: 0.3rem;
+  }
+  dd {
+    margin: 0;
+  }
+  dd a {
+    text-decoration: none;
+  }
+  .reach dl {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+  }
+</style>

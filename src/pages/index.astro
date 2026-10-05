@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Chooser from '../components/Chooser.astro';
+import FullMenu from '../components/FullMenu.astro';
+import About from '../components/About.astro';
+import EventList from '../components/EventList.astro';
+import Voucher from '../components/Voucher.astro';
+import Reviews from '../components/Reviews.astro';
+import FindMe from '../components/FindMe.astro';
+import { site } from '../data/site';
+---
+<Base
+  title={site.name}
+  description="Masáže, meditace a ženské kruhy v Hradci Králové. Vyberte si podle toho, jak se dnes cítíte, a objednejte se zprávou nebo telefonem."
+>
+  <Hero />
+  <Chooser />
+  <FullMenu />
+  <About />
+  <section class="section dark-2" aria-labelledby="dates-title">
+    <div class="wrap">
+      <p class="eyebrow">Skupinová setkání</p>
+      <h2 id="dates-title">Nejbližší termíny</h2>
+      <p class="lead">Meditace, ženské kruhy, konstelace a OM Chanting probíhají ve skupině.</p>
+      <div class="dates"><EventList limit={3} /></div>
+      <p><a class="text-link" href="/terminy">Všechny termíny</a></p>
+    </div>
+  </section>
+  <Voucher />
+  <Reviews />
+  <FindMe />
+</Base>
+
+<style>
+  .dates {
+    margin: 3rem 0 1.5rem;
+  }
+</style>

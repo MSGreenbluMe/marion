@@ -1,0 +1,70 @@
+---
+import type { Category, Service } from '../data/services';
+import { serviceUrl } from '../data/services';
+import { fromPrice, lengthSummary } from '../lib/format';
+import { primaryAction } from '../lib/booking';
+
+interface Props {
+  service: Service;
+  category: Category;
+}
+const { service, category } = Astro.props;
+const length = lengthSummary(service);
+const firstOption = service.options[0]?.label;
+const book = primaryAction(service.name, service.options.length > 1 ? undefined : firstOption);
+---
+<article class="card">
+  <p class="cat">{category.name}</p>
+  <h3><a href={serviceUrl(category.id, service.slug)}>{service.name}</a></h3>
+  {service.summary && <p class="summary">{service.summary}</p>}
+  <p class="meta">
+    {length && <span>{length}</span>}
+    <span>{fromPrice(service)}</span>
+  </p>
+  <div class="actions">
+    <a class="btn btn-quiet" href={book.href} {...(book.external ? { target: '_blank', rel: 'noopener' } : {})}>Objednat</a>
+    <a class="text-link" href={serviceUrl(category.id, service.slug)}>Více o službě</a>
+  </div>
+</article>
+
+<style>
+  .card {
+    padding: 1.75rem;
+    border: 1px solid var(--line-light);
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+  }
+  .cat {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin-bottom: 0.5rem;
+  }
+  h3 {
+    margin-bottom: 0.5rem;
+  }
+  h3 a {
+    text-decoration: none;
+  }
+  h3 a:hover {
+    text-decoration: underline;
+  }
+  .summary {
+    color: var(--ink-soft);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    color: var(--ink-soft);
+    margin-top: auto;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+  }
+</style>

@@ -1,0 +1,96 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import { primaryAction, telHref } from '../lib/booking';
+const order = primaryAction('Dárkový poukaz');
+const { validity, format } = site.voucher;
+---
+<Base
+  title="Dárkový poukaz"
+  description="Dárkový poukaz na masáž, meditaci nebo rituál ve Studiu Marion v Hradci Králové. Objednáte ho zprávou nebo telefonem."
+>
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">Dárkový poukaz</p>
+      <h1>Darujte chvíli klidu</h1>
+      <p class="lead">Poukaz můžete věnovat na konkrétní masáž, meditaci nebo rituál, nebo na částku dle vašeho výběru.</p>
+
+      <ol class="steps">
+        <li>
+          <h2>Napište mi</h2>
+          <p>Pošlete mi zprávu nebo zavolejte. Stačí napsat, na jakou službu nebo částku má poukaz znít a komu je určen.</p>
+        </li>
+        <li>
+          <h2>Domluvíme se</h2>
+          <p>Ozvu se vám a domluvíme se na platbě a předání poukazu.</p>
+        </li>
+        <li>
+          <h2>Termín si vybere obdarovaný</h2>
+          <p>S poukazem se obdarovaný objedná na termín, který mu vyhovuje.</p>
+        </li>
+      </ol>
+
+      {(validity || format) && (
+        <div class="facts measure">
+          {format && <p>{format}</p>}
+          {validity && <p>{validity}</p>}
+        </div>
+      )}
+
+      <div class="actions">
+        <a class="btn btn-primary" href={order.href} {...(order.external ? { target: '_blank', rel: 'noopener' } : {})}>Objednat poukaz</a>
+        <p class="muted">nebo zavolejte <a href={telHref()}>{site.contact.phoneDisplay}</a></p>
+      </div>
+      <p class="muted small">Poukaz se objednává zprávou, na webu se nic neplatí.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .steps {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 4rem 0;
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  }
+  .steps li {
+    counter-increment: step;
+    border-top: 1px solid var(--line-dark);
+    padding-top: 1.5rem;
+  }
+  .steps li::before {
+    content: counter(step);
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    line-height: 1;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .steps h2 {
+    font-size: 1.6rem;
+  }
+  .facts {
+    margin-bottom: 3rem;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+  .actions p {
+    margin: 0;
+  }
+  .actions a:not(.btn) {
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .small {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+</style>

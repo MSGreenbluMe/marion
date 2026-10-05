@@ -1,0 +1,83 @@
+---
+import { site } from '../data/site';
+const headline = site.hero.headline || site.name;
+---
+<section class="hero">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="wrap content">
+    <h1>{headline}</h1>
+    <p class="sub">{site.hero.sub}</p>
+    <a class="btn btn-primary" href="#jak-se-citite">Vybrat, co dnes potřebuji</a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: min(46rem, calc(100svh - 4.75rem));
+    display: grid;
+    align-items: center;
+    padding-block: 6rem;
+    text-align: center;
+    background: radial-gradient(120% 90% at 50% 100%, var(--green-850), var(--green-900) 60%);
+  }
+  /* A candle-like glow that breathes: ~4 s in, ~6 s out. Static with reduced motion. */
+  .glow {
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 50%;
+    width: min(44rem, 120vw);
+    aspect-ratio: 1;
+    margin: calc(min(44rem, 120vw) / -2) 0 0 calc(min(44rem, 120vw) / -2);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      oklch(0.78 0.126 85 / 0.26) 0%,
+      oklch(0.72 0.11 80 / 0.12) 32%,
+      oklch(0.6 0.08 75 / 0.04) 55%,
+      transparent 70%
+    );
+    transform: scale(0.95);
+    opacity: 0.85;
+    will-change: transform, opacity;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .glow {
+      animation: breathe 10s infinite;
+    }
+  }
+  @keyframes breathe {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.6;
+      animation-timing-function: cubic-bezier(0.45, 0, 0.4, 1);
+    }
+    40% {
+      transform: scale(1.08);
+      opacity: 1;
+      animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+    }
+    100% {
+      transform: scale(0.8);
+      opacity: 0.6;
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    max-width: 14em;
+    margin-bottom: 1.25rem;
+  }
+  .sub {
+    max-width: 30rem;
+    font-size: 1.2rem;
+    color: var(--on-dark-soft);
+    margin-bottom: 2.75rem;
+  }
+</style>

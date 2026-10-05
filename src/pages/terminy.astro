@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import EventList from '../components/EventList.astro';
+---
+<Base
+  title="Termíny"
+  description="Nejbližší termíny skupinových meditací, ženských kruhů, rodinných konstelací a OM Chanting v Hradci Králové."
+>
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">Skupinová setkání</p>
+      <h1>Termíny</h1>
+      <p class="lead">Meditace, ženské kruhy, konstelace a OM Chanting probíhají ve skupině. Na každé setkání se prosím přihlaste předem.</p>
+      <div class="list"><EventList /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .list {
+    margin-top: 3.5rem;
+  }
+</style>
