@@ -26,8 +26,9 @@ const blocks = [
 ].filter((b) => b.text);
 
 const length = lengthSummary(service);
-const description = service.description
-  ? service.description.slice(0, 155).replace(/\s+\S*$/, '') + (service.description.length > 155 ? '…' : '')
+const source = service.summary || service.description;
+const description = source
+  ? source.length > 155 ? source.slice(0, 155).replace(/\s+\S*$/, '') + '…' : source
   : `${service.name} v Hradci Králové${length ? `, ${length}` : ''}, ${fromPrice(service)}. Objednání zprávou nebo telefonem.`;
 
 const siblings = category.services.filter((s) => s.slug !== service.slug);
@@ -66,14 +67,14 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
               {service.options.map((o, i) => (
                 <label class="option">
                   <input type="radio" name="option" value={o.label} data-href={optionHrefs[i]} checked={i === 0} />
-                  <span class="opt-label">{o.label}</span>
+                  <span class="opt-label">{o.label}{o.note && <small>{o.note}</small>}</span>
                   <span class="opt-price">{optionPrice(o)}</span>
                 </label>
               ))}
             </fieldset>
           ) : service.options.length === 1 ? (
             <p class="option single">
-              <span class="opt-label">{service.options[0].label}</span>
+              <span class="opt-label">{service.options[0].label}{service.options[0].note && <small>{service.options[0].note}</small>}</span>
               <span class="opt-price">{optionPrice(service.options[0])}</span>
             </p>
           ) : (
@@ -213,6 +214,12 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
   }
   .opt-label {
     flex: 1;
+    line-height: 1.35;
+  }
+  .opt-label small {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--on-dark-soft);
   }
   .opt-price {
     font-family: var(--font-display);

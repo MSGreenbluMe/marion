@@ -8,9 +8,8 @@ export const site = {
   ownerFirstName: 'Martina',
 
   hero: {
-    // TODO(owner): reuse the headline from the live site once it has been copied verbatim.
-    // Until then the studio name is used as the headline.
-    headline: '',
+    // From the live site.
+    headline: 'Péče o tělo, klid pro mysl',
     // Draft for owner approval.
     sub: 'Masáže, meditace a ženské kruhy v Hradci Králové.',
   },
@@ -18,8 +17,7 @@ export const site = {
   contact: {
     phoneDisplay: '604 480 495',
     phoneE164: '+420604480495',
-    // TODO(owner): copy from the live site (could not be read during the build).
-    email: '',
+    email: 'Kubankova.ma@gmail.com',
     street: 'Gočárova třída 1234', // TODO(owner): house number looks like a placeholder, confirm.
     postalCode: '500 02',
     city: 'Hradec Králové',
@@ -40,8 +38,13 @@ export const site = {
   },
 
   about: {
-    // TODO(owner): the "O mně" text from the live site, verbatim. One string per paragraph.
-    paragraphs: [] as string[],
+    // "O mně" text from the live site, verbatim. One string per paragraph.
+    paragraphs: [
+      'Jmenuji se Martina a provázím ženy na cestě zpět k sobě, k jejich tělu, intuici, ženskosti a vnitřní síle.',
+      'Vytvářím bezpečný prostor bez hodnocení, kde mohou ženy na chvíli odložit své role, nemusí nic dokazovat ani předstírat a mohou být samy sebou. Ve své praxi propojuji dotek, vědomou pozornost, ženskou energii, masáže, meditace, ženské rituály, OM Chanting a intuitivní tanec.',
+      'Věřím, že skutečná proměna začíná v tichu a návrat k sobě samé mění i svět kolem nás.',
+      'Budu ráda, když se naše cesty potkají.',
+    ],
     // Portrait of Martina. Put the file into /public/images/ and fill in src + alt.
     portrait: { src: '', alt: '' },
     // Short audio greeting in Martina's own voice. Put the file into /public/audio/.

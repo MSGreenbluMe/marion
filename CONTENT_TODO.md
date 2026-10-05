@@ -14,7 +14,7 @@ Cokoli z tohoto seznamu pošlete, to se doplní. Nic z toho na webu není vymyš
 - [ ] **Potvrďte adresu.** Na současném webu je „Gočárova třída 1234, 500 02 Hradec Králové“. Číslo 1234 vypadá jako vzorové – jaké je správné číslo popisné?
 - [ ] Patro a zvonek (např. „2. patro, zvonek Marion“)
 - [ ] Kde se dá zaparkovat
-- [ ] E-mail, který má být na webu uveden
+- [ ] E-mail: na webu je převzatý „Kubankova.ma@gmail.com“. Je to adresa, kterou chcete uvádět?
 
 ## 3. Objednávání
 
@@ -23,12 +23,9 @@ Cokoli z tohoto seznamu pošlete, to se doplní. Nic z toho na webu není vymyš
 
 ## 4. Texty ze současného webu
 
-Při stavbě webu nebyl současný web studio-marion.cz dostupný, takže vaše texty ještě nejsou převzaty. Převezmou se doslova, beze změn:
+Hlavní nadpis („Péče o tělo, klid pro mysl“), text „O mně“, popisy služeb i odrážky jsou převzaty doslova ze současného webu (stav 5. 10. 2026). Pokud chcete něco upravit, napište.
 
-- [ ] Hlavní nadpis z úvodní stránky (do té doby je nadpisem „Studio Marion“)
-- [ ] Text „O mně“ (do té doby je tam jen jedna věta: „Jsem Martina a ve svém studiu v Hradci Králové nabízím masáže, meditace a ženské rituály.“)
-- [ ] Krátké popisky služeb na stránkách Masáže, Meditace, Rituály
-- [ ] Popisy služeb a tři odrážky „přínosů“ u každé služby
+- [ ] Štítek „Nejoblíbenější volba“ (byl u každé 90min masáže) a popisky typu „Příjemné uvolnění“ / „Hluboká regenerace“ u délek jsme vynechali. Pokud je chcete zpět, dejte vědět.
 
 ## 5. Zkontrolujte prosím ceny
 
@@ -37,9 +34,14 @@ Při stavbě webu nebyl současný web studio-marion.cz dostupný, takže vaše 
 
 ## 6. Zdravotní tvrzení
 
-Na současném webu jsou formulace, které působí jako zdravotní slib, např. „detoxikační“, „rozproudí lymfu“, „léčivých manter“. Takové věty mohou být problém (zákon o regulaci reklamy) a hlavně je nemáme jak doložit.
+Některé převzaté věty působí jako zdravotní slib. Mohou být problém (zákon o regulaci reklamy) a hlavně je nemáme jak doložit. Zatím na webu zůstávají beze změny:
 
-- [ ] Projděte prosím, zda je chcete ponechat, přeformulovat (např. „uvolňující“, „příjemná“), nebo vypustit.
+- **Medová masáž:** „Detoxikační technika… Rozproudí lymfu…“, odrážky „Detoxikace a prokrvení“, „Rozproudění lymfy“
+- **Masáž zad, šíje a hlavy:** „Rozpouští ztuhlá místa a bolesti hlavy“, odrážka „Úleva od bolesti hlavy“
+- **Meditace se zvukem a mantrami:** „opakování léčivých manter“
+- **Relaxační celotělová masáž:** „prokrvení tkání“
+
+- [ ] Ponechat, přeformulovat (např. „uvolňující“, „příjemná“), nebo vypustit?
 
 ## 7. Nové krátké bloky u služeb (nepovinné, ale moc pomůžou)
 
