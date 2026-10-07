@@ -6,7 +6,7 @@ import Illustration from './Illustration.astro';
 const { contact, legal } = site;
 const hasLegal = legal.fullName || legal.ico || legal.registeredAddress;
 ---
-<footer class="footer">
+<footer class="footer dark dark-2">
   <div class="wrap closing">
     <Illustration name="sprig-wide" class="closing-sprig" />
     <p class="closing-name">{site.name}</p>
@@ -53,8 +53,9 @@ const hasLegal = legal.fullName || legal.ico || legal.registeredAddress;
 
 <style>
   .footer {
-    background: var(--green-950);
-    border-top: 1px solid var(--line-dark);
+    background: var(--grain), var(--green-950);
+    color: var(--fg);
+    border-top: 1px solid var(--line);
     padding-block: 5rem 2rem;
     font-size: 0.95rem;
   }
@@ -62,7 +63,7 @@ const hasLegal = legal.fullName || legal.ico || legal.registeredAddress;
     text-align: center;
     padding-bottom: 3.5rem;
     margin-bottom: 3.5rem;
-    border-bottom: 1px solid var(--line-dark);
+    border-bottom: 1px solid var(--line);
   }
   .closing :global(.closing-sprig) {
     width: 11rem;
@@ -78,7 +79,7 @@ const hasLegal = legal.fullName || legal.ico || legal.registeredAddress;
     margin: 0 0 0.5rem;
   }
   .closing-sub {
-    color: var(--on-dark-soft);
+    color: var(--fg-soft);
     margin: 0;
   }
   .grid {
@@ -115,9 +116,9 @@ const hasLegal = legal.fullName || legal.ico || legal.registeredAddress;
   .legal {
     margin-top: 2.5rem;
     padding-top: 1.5rem;
-    border-top: 1px solid var(--line-dark);
+    border-top: 1px solid var(--line);
     font-size: 0.85rem;
-    color: var(--on-dark-soft);
+    color: var(--fg-soft);
   }
   .legal p {
     margin: 0.25rem 0;

@@ -4,13 +4,15 @@
 export interface ChooserState {
   id: string;
   label: string;
+  /** Watercolour shown on the button (file name in /public/art). */
+  art: string;
   services: string[];
 }
 
 export const chooser: ChooserState[] = [
-  { id: 'zada', label: 'Bolí mě záda a šíje', services: ['masaz-zad-sije-a-hlavy', 'sportovni-masaz'] },
-  { id: 'energie', label: 'Jsem bez energie', services: ['relaxacni-masaz', 'lavove-kameny'] },
-  { id: 'ticho', label: 'Potřebuji ticho', services: ['osho-ranni-klidova-meditace', 'meditace-s-dechem'] },
-  { id: 'zeny', label: 'Chci být mezi ženami', services: ['facilitace-zenskych-ritualu', 'meditace-pro-zeny'] },
-  { id: 'zmena', label: 'Procházím změnou', services: ['individualni-konzultace', 'rodinne-konstelace'] },
+  { id: 'zada', art: 'stones', label: 'Bolí mě záda a šíje', services: ['masaz-zad-sije-a-hlavy', 'sportovni-masaz'] },
+  { id: 'energie', art: 'sun', label: 'Jsem bez energie', services: ['relaxacni-masaz', 'lavove-kameny'] },
+  { id: 'ticho', art: 'moon', label: 'Potřebuji ticho', services: ['osho-ranni-klidova-meditace', 'meditace-s-dechem'] },
+  { id: 'zeny', art: 'lotus', label: 'Chci být mezi ženami', services: ['facilitace-zenskych-ritualu', 'meditace-pro-zeny'] },
+  { id: 'zmena', art: 'sprig', label: 'Procházím změnou', services: ['individualni-konzultace', 'rodinne-konstelace'] },
 ];

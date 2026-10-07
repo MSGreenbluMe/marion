@@ -37,7 +37,7 @@ export interface Service {
 export interface Category {
   id: CategoryId;
   name: string;
-  /** Line illustration used for this category. */
+  /** Line illustration and watercolour (same name) used for this category. */
   illustration: 'stones' | 'lotus' | 'moon';
   /** Short intro on the category page. Optional. */
   intro: string;

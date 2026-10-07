@@ -1,14 +1,17 @@
 ---
 import { site } from '../data/site';
 import Illustration from './Illustration.astro';
+import Paint from './Paint.astro';
 
 const headline = site.hero.headline || site.name;
 // "Péče o tělo, klid pro mysl" -> second half in italic gold
 const comma = headline.indexOf(', ');
 const [first, rest] = comma > 0 ? [headline.slice(0, comma + 1), headline.slice(comma + 2)] : [headline, ''];
 ---
-<section class="hero">
-  <div class="rings" aria-hidden="true"></div>
+<section class="hero section clip" data-hero>
+  <Paint name="blob-gold" class="wash wash-gold" settle={false} eager drift={-0.06} />
+  <Paint name="blob-sage" class="wash wash-sage" settle={false} drift={0.05} />
+
   <div class="wrap grid">
     <div class="text">
       <p class="eyebrow">{site.name} · {site.contact.city}</p>
@@ -16,109 +19,202 @@ const [first, rest] = comma > 0 ? [headline.slice(0, comma + 1), headline.slice(
       <p class="sub">{site.hero.sub}</p>
       <div class="actions">
         <a class="btn btn-primary" href="#jak-se-citite">Vybrat, co dnes potřebuji</a>
-        <a class="text-link" href="#nabidka">Celá nabídka</a>
+        <button class="breath-btn" type="button" data-breath-btn aria-pressed="false">
+          <span class="breath-dot" aria-hidden="true"></span>
+          <span data-breath-label>Nadechněte se se mnou</span>
+        </button>
       </div>
     </div>
 
-    <div class="visual" aria-hidden="true">
-      <div class="arch">
-        <div class="glow"></div>
-        <Illustration name="candle" class="candle" />
-        <div class="arch-line"></div>
+    <div class="visual">
+      <div class="arch-wrap">
+        <Paint name="arch" class="arch-paint" settle={false} eager pointer={5} />
+        <div class="glow-pos" data-pointer="5" aria-hidden="true"><div class="glow" data-glow></div></div>
+        <div class="candle-pos" data-pointer="5"><Illustration name="candle" class="candle" /></div>
+        <p class="breath-text" data-breath-text data-pointer="5" aria-live="polite"></p>
       </div>
-      <Illustration name="sprig" class="sprig" />
-      <Illustration name="stones" class="stones" />
+      <Paint name="eucalyptus" class="euca" settle={false} eager pointer={14} />
+      <Paint name="stones" class="stones" settle={false} eager pointer={9} />
     </div>
   </div>
 </section>
 
+<script>
+  // Guided breath: three slow breaths in time with the candle glow (4 s in, 6 s out).
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  const btn = hero?.querySelector<HTMLButtonElement>('[data-breath-btn]');
+  const label = hero?.querySelector<HTMLElement>('[data-breath-label]');
+  const text = hero?.querySelector<HTMLElement>('[data-breath-text]');
+  const glow = hero?.querySelector<HTMLElement>('[data-glow]');
+  let timers: number[] = [];
+
+  const say = (t: string) => {
+    if (!text) return;
+    text.classList.remove('show');
+    window.setTimeout(() => {
+      text.textContent = t;
+      if (t) text.classList.add('show');
+    }, 250);
+  };
+  const stop = () => {
+    timers.forEach(clearTimeout);
+    timers = [];
+    hero?.classList.remove('breathing');
+    btn?.setAttribute('aria-pressed', 'false');
+    if (label) label.textContent = 'Nadechněte se se mnou';
+  };
+  const start = () => {
+    hero?.classList.add('breathing');
+    btn?.setAttribute('aria-pressed', 'true');
+    if (label) label.textContent = 'Zastavit';
+    // restart the glow so "in" begins now
+    if (glow) {
+      glow.style.animation = 'none';
+      void glow.offsetWidth;
+      glow.style.animation = '';
+    }
+    let t = 0;
+    for (let i = 0; i < 3; i++) {
+      timers.push(window.setTimeout(() => say('Nádech'), t));
+      timers.push(window.setTimeout(() => say('Výdech'), t + 4000));
+      t += 10000;
+    }
+    timers.push(window.setTimeout(() => say('Děkuji. Teď jste tady.'), t));
+    timers.push(window.setTimeout(() => { say(''); stop(); }, t + 4500));
+  };
+  btn?.addEventListener('click', () => (hero?.classList.contains('breathing') ? (stop(), say('')) : start()));
+</script>
+
 <style>
   .hero {
-    position: relative;
-    overflow: hidden;
-    padding-block: clamp(3.5rem, 9vw, 7rem) clamp(4.5rem, 10vw, 8rem);
-    background: radial-gradient(90% 70% at 75% 45%, var(--green-850), transparent 70%);
+    padding-block: clamp(2.5rem, 7vw, 5.5rem) clamp(4rem, 9vw, 7rem);
   }
-  .rings {
+  .hero :global(.wash) {
     position: absolute;
-    right: -18rem;
-    top: 50%;
-    width: 60rem;
-    aspect-ratio: 1;
-    translate: 0 -50%;
-    border-radius: 50%;
-    background: repeating-radial-gradient(circle, transparent 0 5.9rem, oklch(0.78 0.126 85 / 0.07) 5.9rem 6rem);
-    mask-image: radial-gradient(circle, #000 30%, transparent 70%);
-    pointer-events: none;
+  }
+  .hero :global(.wash-gold) {
+    width: min(58rem, 120vw);
+    left: -16rem;
+    top: -6rem;
+    opacity: 0.75;
+  }
+  .hero :global(.wash-sage) {
+    width: min(44rem, 100vw);
+    right: -12rem;
+    bottom: -10rem;
+    opacity: 0.7;
   }
   .grid {
-    position: relative;
+    position: relative; /* paints above the washes; no z-index so multiply still reaches the paper */
     display: grid;
-    gap: 3.5rem;
+    gap: 3rem;
     align-items: center;
   }
   @media (min-width: 56rem) {
     .grid {
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 4rem;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
     }
   }
   h1 {
-    max-width: 11em;
+    max-width: 10.5em;
     margin-bottom: 1.5rem;
   }
   h1 em {
-    display: inline-block;
+    white-space: nowrap;
   }
   .sub {
     max-width: 28rem;
-    font-size: 1.2rem;
-    color: var(--on-dark-soft);
+    font-size: 1.22rem;
+    color: var(--fg-soft);
     margin-bottom: 2.5rem;
   }
   .actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1rem 2rem;
+    gap: 1rem 1.75rem;
+  }
+  .breath-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 50px;
+    padding: 0 0.25rem;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.98rem;
+    cursor: pointer;
+  }
+  .breath-btn:hover [data-breath-label] {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .breath-dot {
+    position: relative;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    border: 1px solid var(--gold-deep);
+  }
+  .breath-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0.4rem;
+    border-radius: 50%;
+    background: var(--gold-deep);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.breathing) .breath-dot::after {
+      animation: breathe 10s infinite;
+    }
+  }
+  :global(.breathing) .glow-pos {
+    filter: brightness(1.35) saturate(1.1);
+    transition: filter 1.2s var(--ease);
   }
 
+  /* ---- painted arch */
   .visual {
     position: relative;
-    width: min(100%, 22rem);
+    width: min(100%, 25rem);
     margin-inline: auto;
   }
   @media (max-width: 55.99rem) {
     .visual {
-      width: min(62%, 13.5rem);
+      width: min(74%, 18rem);
     }
   }
-  .arch {
-    aspect-ratio: 3 / 4.3;
-    background:
-      radial-gradient(80% 55% at 50% 52%, oklch(0.3 0.04 120), transparent 75%),
-      linear-gradient(180deg, var(--green-800), var(--green-950));
-    box-shadow: 0 2.5rem 5rem -2rem oklch(0.1 0.02 148 / 0.8);
+  .arch-wrap {
+    position: relative;
   }
-  /* A candle-like glow that breathes: ~4 s in, ~6 s out. Static with reduced motion. */
-  .glow {
+  .arch-wrap :global(.arch-paint) {
+    width: 100%;
+  }
+  /* The glow sits inside the painted arch. Breathes ~4 s in, ~6 s out. Static with reduced motion. */
+  .glow-pos {
     position: absolute;
-    left: 50%;
-    top: 37%;
-    width: 150%;
+    left: 11%;
+    right: 11%;
+    top: 20%;
     aspect-ratio: 1;
-    translate: -50% -50%;
+    pointer-events: none;
+  }
+  .glow {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      oklch(0.86 0.12 85 / 0.55) 0%,
-      oklch(0.78 0.126 85 / 0.22) 16%,
-      oklch(0.7 0.1 80 / 0.07) 38%,
-      transparent 62%
+      oklch(0.9 0.11 85 / 0.7) 0%,
+      oklch(0.8 0.12 82 / 0.32) 18%,
+      oklch(0.7 0.1 80 / 0.1) 42%,
+      transparent 66%
     );
     transform: scale(0.95);
     opacity: 0.9;
-    will-change: transform, opacity;
   }
   @media (prefers-reduced-motion: no-preference) {
     .glow {
@@ -127,45 +223,61 @@ const [first, rest] = comma > 0 ? [headline.slice(0, comma + 1), headline.slice(
   }
   @keyframes breathe {
     0% {
-      transform: scale(0.78);
-      opacity: 0.6;
+      transform: scale(0.74);
+      opacity: 0.55;
       animation-timing-function: cubic-bezier(0.45, 0, 0.4, 1);
     }
     40% {
-      transform: scale(1.08);
+      transform: scale(1.1);
       opacity: 1;
       animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
     }
     100% {
-      transform: scale(0.78);
-      opacity: 0.6;
+      transform: scale(0.74);
+      opacity: 0.55;
     }
   }
-  .visual :global(.candle) {
+  .candle-pos {
     position: absolute;
-    left: 50%;
-    bottom: 10%;
-    width: 52%;
-    translate: -50% 0;
-    color: var(--gold);
-    --illo-fill: oklch(0.24 0.032 140);
+    left: 32%;
+    width: 36%;
+    top: 49%;
   }
-  .visual :global(.sprig) {
-    position: absolute;
-    left: -24%;
-    bottom: -6%;
-    width: 42%;
+  .candle-pos :global(.candle) {
+    width: 100%;
     color: var(--gold);
-    opacity: 0.85;
-    --illo-fill: var(--green-900);
-    rotate: -8deg;
+    --illo-fill: oklch(0.27 0.04 145);
+  }
+  .breath-text {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    top: 22%;
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+    line-height: 1.2;
+    color: var(--paper);
+    opacity: 0;
+    transition: opacity 0.6s var(--ease);
+  }
+  .breath-text:global(.show) {
+    opacity: 1;
+  }
+  .visual :global(.euca) {
+    position: absolute;
+    left: -27%;
+    bottom: 2%;
+    width: 44%;
+    rotate: -10deg;
   }
   .visual :global(.stones) {
     position: absolute;
-    right: -16%;
-    bottom: -4%;
-    width: 38%;
-    color: var(--gold-soft);
-    --illo-fill: var(--green-900);
+    right: -24%;
+    bottom: -6%;
+    width: 52%;
   }
 </style>

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
+import Paint from '../components/Paint.astro';
 const { legal, contact } = site;
 const controller = [legal.fullName || site.name, legal.ico && `IČO ${legal.ico}`, legal.registeredAddress]
   .filter(Boolean)
@@ -10,7 +11,8 @@ const controller = [legal.fullName || site.name, legal.ico && `IČO ${legal.ico}
   title="Ochrana osobních údajů"
   description="Jak Studio Marion zachází s osobními údaji: web nepoužívá cookies ani analytiku, údaje z objednávek slouží jen k domluvě termínu."
 >
-  <section class="section">
+  <section class="section clip">
+    <Paint name="eucalyptus" class="pr-leaf" drift={0.05} />
     <div class="wrap measure prose">
       <p class="eyebrow">Informace</p>
       <h1>Ochrana osobních údajů</h1>
@@ -44,6 +46,16 @@ const controller = [legal.fullName || site.name, legal.ico && `IČO ${legal.ico}
 </Base>
 
 <style>
+  section :global(.pr-leaf) {
+    position: absolute;
+    right: 3%;
+    top: 3rem;
+    width: min(8rem, 20vw);
+    rotate: -12deg;
+  }
+  .prose {
+    position: relative;
+  }
   .prose h2 {
     font-size: 1.7rem;
     margin-top: 2.5rem;

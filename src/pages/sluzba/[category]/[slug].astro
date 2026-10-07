@@ -4,7 +4,7 @@ import BookingActions from '../../../components/BookingActions.astro';
 import { categories, serviceUrl, type Category, type Service } from '../../../data/services';
 import { fromPrice, lengthSummary, optionPrice } from '../../../lib/format';
 import { primaryAction } from '../../../lib/booking';
-import Illustration from '../../../components/Illustration.astro';
+import Paint from '../../../components/Paint.astro';
 
 export function getStaticPaths() {
   return categories.flatMap((category) =>
@@ -35,8 +35,8 @@ const description = source
 const siblings = category.services.filter((s) => s.slug !== service.slug);
 ---
 <Base title={service.name} description={description} bookingService={service.name} bookingOption={firstOption}>
-  <article class="section page">
-    <Illustration name={category.illustration} class="backdrop" />
+  <article class="section clip page">
+    <Paint name={category.illustration} class="backdrop" eager settle={false} drift={-0.05} />
     <div class="wrap">
       <nav class="crumbs" aria-label="Drobečková navigace">
         <a href={`/${category.id}`}>{category.name}</a>
@@ -63,7 +63,7 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
           ))}
         </div>
 
-        <aside class="book" aria-labelledby="book-title">
+        <aside class="book dark" aria-labelledby="book-title">
           <h2 id="book-title" class="book-title">Cena a objednání</h2>
           {service.options.length > 1 ? (
             <fieldset class="options">
@@ -123,12 +123,13 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
   }
   .page :global(.backdrop) {
     position: absolute;
-    right: -6rem;
-    top: -3rem;
-    width: min(34rem, 80vw);
-    color: var(--gold);
-    opacity: 0.09;
-    pointer-events: none;
+    right: -4rem;
+    top: -2rem;
+    width: min(30rem, 75vw);
+    opacity: 0.5;
+  }
+  .page .wrap {
+    position: relative;
   }
   .crumbs {
     margin-bottom: 1.5rem;
@@ -137,7 +138,7 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    color: var(--gold);
+    color: var(--gold-deep);
     text-decoration: none;
     letter-spacing: 0.06em;
   }
@@ -176,14 +177,14 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
     align-items: baseline;
     gap: 1.1rem;
     padding: 1rem 1.25rem;
-    border: 1px solid var(--line-dark);
+    border: 1px solid var(--line);
     border-radius: 0.5rem;
-    background: oklch(0.78 0.126 85 / 0.03);
+    background: var(--grain), oklch(1 0 0 / 0.45);
   }
   .num {
     font-family: var(--font-display);
     font-style: italic;
-    color: var(--gold);
+    color: var(--gold-deep);
     font-size: 1.15rem;
   }
   .block {
@@ -195,12 +196,13 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
   .book {
     position: relative;
     padding: 2rem;
-    border: 1px solid var(--line-dark);
-    border-radius: 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
     background:
-      radial-gradient(80% 60% at 100% 0%, oklch(0.78 0.126 85 / 0.08), transparent 70%),
-      var(--green-950);
-    box-shadow: 0 2rem 4rem -2.5rem oklch(0.05 0.02 148);
+      radial-gradient(80% 60% at 100% 0%, oklch(0.78 0.126 85 / 0.12), transparent 70%),
+      var(--grain), var(--green-900);
+    color: var(--fg);
+    box-shadow: 0 2.5rem 4rem -2.5rem oklch(0.25 0.04 140 / 0.7);
   }
   .book-title {
     font-family: var(--font-text);
@@ -222,7 +224,7 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
     gap: 0.9rem;
     min-height: 52px;
     padding: 0.4rem 0;
-    border-bottom: 1px solid var(--line-dark);
+    border-bottom: 1px solid var(--line);
     margin: 0;
   }
   label.option {
@@ -244,7 +246,7 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
   .opt-label small {
     display: block;
     font-size: 0.85rem;
-    color: var(--on-dark-soft);
+    color: var(--fg-soft);
   }
   .opt-price {
     font-family: var(--font-display);
@@ -254,7 +256,7 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
   .more {
     margin-top: var(--space-section);
     padding-top: 2.5rem;
-    border-top: 1px solid var(--line-dark);
+    border-top: 1px solid var(--line);
   }
   .more ul {
     list-style: none;
@@ -271,6 +273,6 @@ const siblings = category.services.filter((s) => s.slug !== service.slug);
     text-decoration: none;
   }
   .more a:hover {
-    color: var(--gold);
+    color: var(--gold-deep);
   }
 </style>

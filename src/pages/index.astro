@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Chooser from '../components/Chooser.astro';
 import Offer from '../components/Offer.astro';
-import Illustration from '../components/Illustration.astro';
+import Paint from '../components/Paint.astro';
 import About from '../components/About.astro';
 import EventList from '../components/EventList.astro';
 import Voucher from '../components/Voucher.astro';
@@ -19,8 +19,8 @@ import { site } from '../data/site';
   <Chooser />
   <Offer />
   <About />
-  <section class="section dark-2 dates-section" aria-labelledby="dates-title">
-    <Illustration name="sprig" class="dates-decor" />
+  <section class="section clip dates-section" aria-labelledby="dates-title">
+    <Paint name="sun" class="dates-decor" drift={-0.08} />
     <div class="wrap">
       <p class="eyebrow">Skupinová setkání</p>
       <h2 id="dates-title">Nejbližší <em>termíny</em></h2>
@@ -40,13 +40,13 @@ import { site } from '../data/site';
   }
   .dates-section :global(.dates-decor) {
     position: absolute;
-    right: 4%;
-    top: -2rem;
-    width: 7rem;
-    color: var(--gold);
-    opacity: 0.35;
-    rotate: 200deg;
-    pointer-events: none;
+    right: -4rem;
+    top: 2rem;
+    width: min(22rem, 55vw);
+    opacity: 0.7;
+  }
+  .dates-section .wrap {
+    position: relative;
   }
   .dates {
     margin: 3rem 0 1.5rem;

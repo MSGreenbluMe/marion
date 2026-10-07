@@ -1,15 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import EventList from '../components/EventList.astro';
+import Paint from '../components/Paint.astro';
 ---
 <Base
   title="Termíny"
   description="Nejbližší termíny skupinových meditací, ženských kruhů, rodinných konstelací a OM Chanting v Hradci Králové."
 >
-  <section class="section">
+  <section class="section clip">
+    <Paint name="sun" class="t-sun" eager settle={false} drift={-0.06} />
     <div class="wrap">
       <p class="eyebrow">Skupinová setkání</p>
-      <h1>Termíny</h1>
+      <h1>Nejbližší <em>termíny</em></h1>
       <p class="lead">Meditace, ženské kruhy, konstelace a OM Chanting probíhají ve skupině. Na každé setkání se prosím přihlaste předem.</p>
       <div class="list"><EventList /></div>
     </div>
@@ -17,6 +19,16 @@ import EventList from '../components/EventList.astro';
 </Base>
 
 <style>
+  section :global(.t-sun) {
+    position: absolute;
+    right: -5rem;
+    top: -3rem;
+    width: min(24rem, 60vw);
+    opacity: 0.75;
+  }
+  .wrap {
+    position: relative;
+  }
   .list {
     margin-top: 3.5rem;
   }

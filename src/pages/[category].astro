@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { categories, serviceUrl, type Category } from '../data/services';
 import { fromPrice, lengthSummary } from '../lib/format';
-import Illustration from '../components/Illustration.astro';
+import Paint from '../components/Paint.astro';
 
 export function getStaticPaths() {
   return categories.map((category) => ({ params: { category: category.id }, props: { category } }));
@@ -11,7 +11,7 @@ const { category } = Astro.props as { category: Category };
 const others = categories.filter((c) => c.id !== category.id);
 ---
 <Base title={category.name} description={category.metaDescription}>
-  <section class="section page">
+  <section class="section clip page">
     <div class="wrap">
       <header class="head">
         <div>
@@ -19,9 +19,9 @@ const others = categories.filter((c) => c.id !== category.id);
           <h1>{category.name}</h1>
           {category.intro && <p class="lead">{category.intro}</p>}
         </div>
-        <div class="arch head-arch" aria-hidden="true">
-          <Illustration name={category.illustration} class="head-illo" />
-          <div class="arch-line"></div>
+        <div class="head-art">
+          <Paint name="arch-soft" class="head-arch" eager settle={false} />
+          <Paint name={category.illustration} class="head-illo" eager settle={false} />
         </div>
       </header>
 
@@ -60,35 +60,33 @@ const others = categories.filter((c) => c.id !== category.id);
   }
   @media (min-width: 48rem) {
     .head {
-      grid-template-columns: 1fr 14rem;
+      grid-template-columns: 1fr 15rem;
       gap: 4rem;
     }
   }
-  .head-arch {
-    width: min(60%, 14rem);
-    aspect-ratio: 3 / 3.6;
-    background:
-      radial-gradient(70% 50% at 50% 62%, oklch(0.34 0.045 115), transparent 75%),
-      linear-gradient(180deg, var(--green-800), var(--green-950));
-    display: grid;
-    place-items: center;
+  .head-art {
+    position: relative;
+    width: min(55%, 13rem);
   }
   @media (min-width: 48rem) {
-    .head-arch {
+    .head-art {
       width: 100%;
     }
   }
-  .head-arch :global(.head-illo) {
-    width: 56%;
-    margin-top: 22%;
-    color: var(--gold);
-    --illo-fill: oklch(0.29 0.04 125);
+  .head-art :global(.head-arch) {
+    width: 100%;
+  }
+  .head-art :global(.head-illo) {
+    position: absolute;
+    left: 5%;
+    width: 90%;
+    bottom: 10%;
   }
   .list {
     list-style: none;
     padding: 0;
     margin: 4rem 0 3rem;
-    border-top: 1px solid var(--line-dark);
+    border-top: 1px solid var(--line);
   }
   .list a {
     display: flex;
@@ -97,7 +95,7 @@ const others = categories.filter((c) => c.id !== category.id);
     gap: 1rem 2rem;
     padding: 1.6rem 0;
     min-height: 44px;
-    border-bottom: 1px solid var(--line-dark);
+    border-bottom: 1px solid var(--line);
     text-decoration: none;
   }
   .main {
@@ -111,10 +109,10 @@ const others = categories.filter((c) => c.id !== category.id);
     line-height: 1.2;
   }
   .list a:hover .name {
-    color: var(--gold);
+    color: var(--gold-deep);
   }
   .summary {
-    color: var(--on-dark-soft);
+    color: var(--fg-soft);
     max-width: var(--measure);
   }
   .side {
@@ -125,12 +123,13 @@ const others = categories.filter((c) => c.id !== category.id);
     flex-shrink: 0;
   }
   .price {
-    color: var(--gold);
+    color: var(--ink);
+    font-weight: 400;
     white-space: nowrap;
   }
   .length {
     font-size: 0.9rem;
-    color: var(--on-dark-soft);
+    color: var(--fg-soft);
     white-space: nowrap;
   }
   .others {

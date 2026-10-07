@@ -3,7 +3,7 @@ import type { Category, Service } from '../data/services';
 import { serviceUrl } from '../data/services';
 import { fromPrice, lengthSummary } from '../lib/format';
 import { primaryAction } from '../lib/booking';
-import Illustration from './Illustration.astro';
+import Paint from './Paint.astro';
 
 interface Props {
   service: Service;
@@ -15,16 +15,16 @@ const firstOption = service.options[0]?.label;
 const book = primaryAction(service.name, service.options.length > 1 ? undefined : firstOption);
 ---
 <article class="card">
-  <Illustration name={category.illustration} class="mark" />
+  <Paint name={category.illustration} class="art" settle={false} />
   <p class="cat">{category.name}</p>
   <h3><a href={serviceUrl(category.id, service.slug)}>{service.name}</a></h3>
   {service.summary && <p class="summary">{service.summary}</p>}
   <p class="meta">
     {length && <span>{length}</span>}
-    <span>{fromPrice(service)}</span>
+    <span class="price">{fromPrice(service)}</span>
   </p>
   <div class="actions">
-    <a class="btn btn-quiet" href={book.href} {...(book.external ? { target: '_blank', rel: 'noopener' } : {})}>Objednat</a>
+    <a class="btn btn-primary" href={book.href} {...(book.external ? { target: '_blank', rel: 'noopener' } : {})}>Objednat</a>
     <a class="text-link" href={serviceUrl(category.id, service.slug)}>Více o službě</a>
   </div>
 </article>
@@ -32,49 +32,58 @@ const book = primaryAction(service.name, service.options.length > 1 ? undefined 
 <style>
   .card {
     position: relative;
-    padding: 1.75rem;
-    border: 1px solid var(--line-light);
-    border-radius: 0.5rem;
-    background: var(--paper);
+    padding: 2rem 1.75rem 1.75rem;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    background: var(--grain), var(--paper);
     display: flex;
     flex-direction: column;
-    box-shadow: 0 1.25rem 2.5rem -2rem oklch(0.3 0.03 100 / 0.4);
+    box-shadow: 0 1.5rem 3rem -2.25rem oklch(0.35 0.05 90 / 0.55);
+    overflow: hidden;
   }
-  .card :global(.mark) {
+  .card :global(.art) {
     position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    width: 3.25rem;
-    color: var(--gold-deep);
-    opacity: 0.8;
-    --illo-fill: var(--paper);
+    top: -1.5rem;
+    right: -1.5rem;
+    width: 9rem;
+    opacity: 0.9;
   }
   .cat {
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
+    font-size: 0.74rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--gold-deep);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
   }
   h3 {
-    margin-bottom: 0.5rem;
-    padding-right: 3.5rem;
+    position: relative;
+    font-size: 1.65rem;
+    margin-bottom: 0.6rem;
+    padding-right: 5rem;
   }
   h3 a {
     text-decoration: none;
   }
   h3 a:hover {
     text-decoration: underline;
+    text-decoration-thickness: 1px;
   }
   .summary {
-    color: var(--ink-soft);
+    position: relative;
+    color: var(--fg-soft);
+    font-size: 0.98rem;
+    line-height: 1.6;
   }
   .meta {
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem 1.25rem;
-    color: var(--ink-soft);
+    color: var(--fg-soft);
     margin-top: auto;
+  }
+  .price {
+    color: var(--ink);
+    font-weight: 400;
   }
   .actions {
     display: flex;

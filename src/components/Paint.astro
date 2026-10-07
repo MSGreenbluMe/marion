@@ -1,0 +1,43 @@
+---
+// A watercolour painting from /public/art (made by scripts/watercolor/paint.py).
+// Decorative by default (empty alt). `drift` = gentle scroll parallax factor, `pointer` = follows the pointer.
+const SIZES: Record<string, [number, number]> = {
+  arch: [900, 1220],
+  'arch-soft': [900, 1220],
+  eucalyptus: [620, 1100],
+  'eucalyptus-2': [620, 1100],
+  stones: [760, 760],
+  lotus: [900, 700],
+  moon: [760, 760],
+  sun: [600, 600],
+  sprig: [520, 300],
+  'band-sage': [1600, 360],
+  'blob-gold': [900, 700],
+  'blob-sage': [900, 700],
+  'blob-blush': [900, 700],
+};
+
+interface Props {
+  name: keyof typeof SIZES | string;
+  class?: string;
+  alt?: string;
+  settle?: boolean;
+  drift?: number;
+  pointer?: number;
+  eager?: boolean;
+}
+const { name, class: className, alt = '', settle = true, drift, pointer, eager = false } = Astro.props;
+const [w, h] = SIZES[name] ?? [800, 800];
+---
+<img
+  src={`/art/${name}.webp`}
+  width={w}
+  height={h}
+  alt={alt}
+  aria-hidden={alt ? undefined : 'true'}
+  loading={eager ? 'eager' : 'lazy'}
+  decoding="async"
+  class:list={['paint', { settle }, className]}
+  data-drift={drift}
+  data-pointer={pointer}
+/>

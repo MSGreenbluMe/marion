@@ -42,25 +42,27 @@ const isCurrent = (href: string) =>
 
 <style>
   .header {
-    position: relative;
-    z-index: 20;
-    border-bottom: 1px solid var(--line-dark);
-    background: var(--green-900);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in oklch, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px) saturate(1.1);
+    border-bottom: 1px solid color-mix(in oklch, var(--line) 70%, transparent);
   }
   .inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    min-height: 4.75rem;
+    min-height: 4.5rem;
   }
   .brand {
     font-family: var(--font-display);
-    font-size: 1.65rem;
+    font-size: 1.55rem;
     font-weight: 400;
-    letter-spacing: 0.04em;
+    letter-spacing: -0.01em;
     text-decoration: none;
-    color: var(--on-dark);
+    color: var(--ink);
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -71,7 +73,7 @@ const isCurrent = (href: string) =>
     padding: 0;
   }
   a[aria-current='page'] {
-    color: var(--gold);
+    color: var(--gold-deep);
   }
   .nav-desktop {
     display: none;
@@ -87,16 +89,32 @@ const isCurrent = (href: string) =>
     align-items: center;
     min-height: 44px;
     text-decoration: none;
-    font-size: 0.92rem;
-    letter-spacing: 0.06em;
+    font-size: 0.93rem;
+    letter-spacing: 0.04em;
   }
-  .nav-desktop ul a:hover {
-    color: var(--gold);
+  .nav-desktop ul a {
+    position: relative;
+  }
+  .nav-desktop ul a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.55rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s var(--ease);
+  }
+  .nav-desktop ul a:hover::after,
+  .nav-desktop ul a[aria-current='page']::after {
+    transform: scaleX(1);
   }
   .phone {
-    color: var(--on-dark-soft);
+    color: var(--ink-soft);
     padding-left: 2rem;
-    border-left: 1px solid var(--line-dark);
+    border-left: 1px solid var(--line);
     white-space: nowrap;
   }
   .nav-mobile summary {
@@ -107,7 +125,7 @@ const isCurrent = (href: string) =>
     min-width: 44px;
     padding: 0 0.25rem;
     cursor: pointer;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     font-size: 0.8rem;
   }
@@ -115,25 +133,27 @@ const isCurrent = (href: string) =>
     display: none;
   }
   .nav-mobile[open] summary {
-    color: var(--gold);
+    color: var(--gold-deep);
   }
   .nav-mobile nav {
     position: absolute;
     left: 0;
     right: 0;
     top: 100%;
-    background: var(--green-950);
-    border-bottom: 1px solid var(--line-dark);
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
     padding: 0.5rem var(--gutter) 1.25rem;
+    box-shadow: 0 1.5rem 2rem -1.5rem oklch(0.3 0.03 100 / 0.3);
   }
   .nav-mobile a {
     display: flex;
     align-items: center;
-    min-height: 52px;
+    min-height: 54px;
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.55rem;
+    font-weight: 300;
     text-decoration: none;
-    border-bottom: 1px solid var(--line-dark);
+    border-bottom: 1px solid var(--line);
   }
   @media (min-width: 62rem) {
     .nav-desktop {

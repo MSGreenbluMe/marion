@@ -1,6 +1,6 @@
 ---
 import { site } from '../data/site';
-import Illustration from './Illustration.astro';
+import Paint from './Paint.astro';
 const { about, ownerFirstName } = site;
 // Until the "O mně" text is supplied, a short factual line stands in.
 const paragraphs = about.paragraphs.length
@@ -8,20 +8,20 @@ const paragraphs = about.paragraphs.length
   : [`Jsem ${ownerFirstName} a ve svém studiu v Hradci Králové nabízím masáže, meditace a ženské rituály.`];
 const hasPortrait = Boolean(about.portrait.src);
 ---
-<section class="section about" id="o-mne" aria-labelledby="about-title">
+<section class="section paper-2 clip about" id="o-mne" aria-labelledby="about-title">
   <div class="wrap grid">
     <div class="visual">
-      <div class="arch frame">
-        {hasPortrait ? (
+      {hasPortrait ? (
+        <div class="frame arch-mask">
           <img src={about.portrait.src} alt={about.portrait.alt || `${ownerFirstName}, ${site.name}`} width="640" height="860" loading="lazy" decoding="async" />
-        ) : (
-          <div class="still" aria-hidden="true">
-            <Illustration name="lotus" class="lotus" />
-          </div>
-        )}
-        <div class="arch-line"></div>
-      </div>
-      <Illustration name="sprig" class="sprig" />
+        </div>
+      ) : (
+        <div class="frame-empty">
+          <Paint name="arch-soft" class="arch" />
+          <Paint name="lotus" class="lotus" />
+        </div>
+      )}
+      <Paint name="eucalyptus" class="sprig" drift={0.05} />
     </div>
 
     <div class="text">
@@ -49,58 +49,52 @@ const hasPortrait = Boolean(about.portrait.src);
 </section>
 
 <style>
-  .about {
-    overflow: hidden;
-  }
   .grid {
     display: grid;
-    gap: 4rem;
+    gap: 3.5rem;
     align-items: center;
   }
   @media (min-width: 56rem) {
     .grid {
       grid-template-columns: 5fr 7fr;
-      gap: 6rem;
+      gap: 5rem;
     }
   }
   .visual {
     position: relative;
-    width: min(100%, 24rem);
+    width: min(100%, 26rem);
     margin-inline: auto;
   }
   .frame {
+    position: relative;
     aspect-ratio: 3 / 4;
-    background:
-      radial-gradient(70% 50% at 50% 65%, oklch(0.34 0.045 115), transparent 75%),
-      linear-gradient(180deg, var(--green-800), var(--green-950));
   }
   .frame img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  .still {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
+  .frame-empty {
+    position: relative;
   }
-  .still :global(.lotus) {
-    width: 58%;
-    margin-top: 18%;
-    color: var(--gold);
-    --illo-fill: oklch(0.29 0.04 125);
+  .frame-empty :global(.arch) {
+    width: 100%;
+  }
+  .frame-empty :global(.lotus) {
+    position: absolute;
+    left: 6%;
+    width: 88%;
+    bottom: 12%;
   }
   .visual :global(.sprig) {
     position: absolute;
-    right: -14%;
-    bottom: -8%;
-    width: 36%;
-    color: var(--gold);
-    --illo-fill: var(--green-900);
-    rotate: 14deg;
+    right: -10%;
+    bottom: -14%;
+    width: 30%;
+    rotate: 24deg;
   }
   .text {
+    position: relative;
     max-width: var(--measure);
     font-size: 1.125rem;
   }
@@ -111,19 +105,22 @@ const hasPortrait = Boolean(about.portrait.src);
     font-family: var(--font-display);
     font-style: italic;
     font-weight: 300;
-    font-size: clamp(1.45rem, 2.6vw, 1.8rem);
-    line-height: 1.4;
-    color: var(--gold-soft);
+    font-size: clamp(1.5rem, 2.8vw, 1.95rem);
+    line-height: 1.38;
+    color: var(--green-800);
     padding-left: 1.5rem;
-    border-left: 1px solid var(--gold);
+    border-left: 2px solid oklch(0.78 0.126 85 / 0.7);
     margin: 2rem 0;
   }
   .signature {
     font-family: var(--font-display);
     font-style: italic;
-    font-size: 2.2rem;
-    color: var(--gold);
-    margin-top: 1.5rem;
+    font-size: 2.4rem;
+    color: var(--gold-deep);
+    margin-top: 1.25rem;
+    rotate: -3deg;
+    transform-origin: left;
+    width: fit-content;
   }
   .audio {
     margin-top: 2rem;

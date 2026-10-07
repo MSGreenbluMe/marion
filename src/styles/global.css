@@ -1,35 +1,66 @@
+/* ------------------------------------------------------------------ palette */
 :root {
-  --green-950: oklch(0.15 0.024 148);
-  --green-900: oklch(0.19 0.028 148);
-  --green-850: oklch(0.23 0.03 148);
-  --green-800: oklch(0.28 0.032 148);
-  --green-700: oklch(0.36 0.035 148);
+  --green-950: oklch(0.17 0.026 150);
+  --green-900: oklch(0.22 0.032 150);
+  --green-800: oklch(0.3 0.036 150);
+  --green-700: oklch(0.38 0.04 150);
   --gold: oklch(0.78 0.126 85);
   --gold-soft: oklch(0.86 0.07 85);
-  --gold-deep: oklch(0.47 0.09 75); /* gold for text on light ground */
-  --paper: oklch(0.965 0.014 85);
-  --paper-2: oklch(0.935 0.02 85);
-  --ink: oklch(0.24 0.028 148);
-  --ink-soft: oklch(0.42 0.022 148);
-  --on-dark: oklch(0.93 0.018 85);
-  --on-dark-soft: oklch(0.8 0.022 110);
-  --line-dark: oklch(0.36 0.03 148 / 0.7);
-  --line-light: oklch(0.82 0.02 85);
+  --gold-deep: oklch(0.5 0.1 70);
+  --paper: oklch(0.968 0.013 85);
+  --paper-2: oklch(0.942 0.019 85);
+  --paper-3: oklch(0.915 0.024 85);
+  --ink: oklch(0.25 0.03 150);
+  --ink-soft: oklch(0.43 0.024 150);
+  --sage: oklch(0.62 0.045 150);
+  --rose: oklch(0.7 0.07 25);
 
   --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --font-text: 'Jost', 'Segoe UI', system-ui, sans-serif;
 
-  --space-section: clamp(5rem, 12vw, 9.5rem);
+  --space-section: clamp(5rem, 11vw, 9rem);
   --measure: 36rem;
-  --wrap: 68rem;
+  --wrap: 70rem;
   --gutter: clamp(1rem, 4vw, 2.5rem);
-  --radius: 2px;
+  --radius: 0.6rem;
   --bar-h: 4.5rem;
-  --sage: oklch(0.62 0.045 150);
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  --illo-fill: var(--green-900);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* semantic tokens: light paper is the default ground */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-soft: var(--ink-soft);
+  --line: oklch(0.84 0.02 85);
+  --accent: var(--gold-deep);
+  --btn-bg: var(--green-900);
+  --btn-fg: var(--paper);
+  --btn-hover: var(--green-700);
+  --illo-fill: var(--paper);
 }
 
+.paper-2 {
+  --bg: var(--paper-2);
+  --illo-fill: var(--paper-2);
+}
+.dark {
+  --bg: var(--green-900);
+  --fg: oklch(0.94 0.016 85);
+  --fg-soft: oklch(0.8 0.024 110);
+  --line: oklch(0.4 0.03 150 / 0.75);
+  --accent: var(--gold);
+  --btn-bg: var(--gold);
+  --btn-fg: var(--green-950);
+  --btn-hover: var(--gold-soft);
+  --illo-fill: var(--green-900);
+  color: var(--fg);
+}
+.dark-2 {
+  --bg: var(--green-950);
+  --illo-fill: var(--green-950);
+}
+
+/* ------------------------------------------------------------------ base */
 *,
 *::before,
 *::after {
@@ -50,9 +81,8 @@ html {
 
 body {
   margin: 0;
-  background: var(--grain) repeat, var(--green-900);
-  background-size: 160px, auto;
-  color: var(--on-dark);
+  background: var(--grain), var(--bg);
+  color: var(--fg);
   font-family: var(--font-text);
   font-weight: 300;
   font-size: 1.0625rem;
@@ -77,32 +107,26 @@ h2,
 h3 {
   font-family: var(--font-display);
   font-weight: 300;
-  line-height: 1.12;
-  letter-spacing: -0.01em;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
   font-variation-settings: 'SOFT' 100;
   margin: 0 0 0.6em;
   text-wrap: pretty;
 }
-
 h1 {
-  font-size: clamp(2.5rem, 6.4vw, 4.4rem);
+  font-size: clamp(2.6rem, 6.6vw, 4.8rem);
 }
 h2 {
-  font-size: clamp(1.9rem, 4.2vw, 2.9rem);
+  font-size: clamp(2rem, 4.4vw, 3.1rem);
 }
 h3 {
-  font-size: 1.45rem;
+  font-size: 1.5rem;
 }
 h1 em,
-h2 em {
+h2 em,
+h3 em {
   font-style: italic;
-  color: var(--gold);
-}
-.light h1 em,
-.light h2 em,
-.light-2 h1 em,
-.light-2 h2 em {
-  color: var(--gold-deep);
+  color: var(--accent);
 }
 
 p {
@@ -117,13 +141,15 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-.light :focus-visible {
-  outline-color: var(--gold-deep);
+
+::selection {
+  background: oklch(0.86 0.07 85 / 0.6);
 }
 
+/* ------------------------------------------------------------------ layout */
 .wrap {
   width: 100%;
   max-width: var(--wrap);
@@ -132,31 +158,24 @@ a {
 }
 
 .section {
-  padding-block: var(--space-section);
-}
-
-.light {
-  background: var(--grain) repeat, var(--paper);
-  background-size: 160px, auto;
-  color: var(--ink);
-  --illo-fill: var(--paper);
-}
-.light-2 {
-  background: var(--grain) repeat, var(--paper-2);
-  background-size: 160px, auto;
-  color: var(--ink);
-  --illo-fill: var(--paper-2);
-}
-.dark-2 {
-  background: var(--grain) repeat, var(--green-950);
-  background-size: 160px, auto;
-  --illo-fill: var(--green-950);
-}
-.section {
   position: relative;
+  padding-block: var(--space-section);
+  background: var(--grain), var(--bg);
+  color: var(--fg);
+}
+.section.clip {
+  overflow: hidden;
 }
 
-/* Eyebrow with a small gold rule in front */
+.eyebrow {
+  font-family: var(--font-text);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1.4rem;
+}
 .eyebrow::before {
   content: '';
   display: inline-block;
@@ -167,6 +186,18 @@ a {
   background: currentColor;
   opacity: 0.7;
 }
+
+.lead {
+  font-size: 1.2rem;
+  max-width: var(--measure);
+  color: var(--fg-soft);
+}
+.muted {
+  color: var(--fg-soft);
+}
+.measure {
+  max-width: var(--measure);
+}
 .center {
   text-align: center;
 }
@@ -174,164 +205,80 @@ a {
   margin-inline: auto;
 }
 
-/* Arch frame: the studio's recurring shape */
-.arch {
-  position: relative;
-  border-radius: 999px 999px 0.5rem 0.5rem;
-  overflow: hidden;
-  isolation: isolate;
-}
-.arch-line {
-  position: absolute;
-  inset: 0.65rem;
-  border: 1px solid oklch(0.78 0.126 85 / 0.45);
-  border-radius: 999px 999px 0.25rem 0.25rem;
-  pointer-events: none;
-}
-
-/* Ornament between headline and text */
-.ornament {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--gold);
-  margin: 0 0 2rem;
-}
-.ornament::before,
-.ornament::after {
-  content: '';
-  height: 1px;
-  width: 2.5rem;
-  background: currentColor;
-  opacity: 0.6;
-}
-.center .ornament {
-  justify-content: center;
-}
-.light .ornament,
-.light-2 .ornament {
-  color: var(--gold-deep);
-}
-
-.eyebrow {
-  font-family: var(--font-text);
-  font-size: 0.78rem;
-  font-weight: 400;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin: 0 0 1.4rem;
-}
-.light .eyebrow,
-.light-2 .eyebrow {
-  color: var(--gold-deep);
-}
-
-.lead {
-  font-size: 1.2rem;
-  max-width: var(--measure);
-  color: var(--on-dark-soft);
-}
-.light .lead,
-.light-2 .lead {
-  color: var(--ink-soft);
-}
-
-.measure {
-  max-width: var(--measure);
-}
-
-.muted {
-  color: var(--on-dark-soft);
-}
-.light .muted,
-.light-2 .muted {
-  color: var(--ink-soft);
-}
-
-/* Buttons: one gold button per screen, everything else quiet. */
+/* ------------------------------------------------------------------ buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.6em;
-  min-height: 48px;
-  padding: 0.7rem 1.6rem;
+  min-height: 50px;
+  padding: 0.7rem 1.7rem;
   border: 1px solid currentColor;
-  border-radius: var(--radius);
+  border-radius: 999px;
   font: inherit;
   font-weight: 400;
   font-size: 0.95rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-decoration: none;
   cursor: pointer;
   background: transparent;
   color: inherit;
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease),
+    transform 0.3s var(--ease);
 }
 .btn-primary {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--green-950);
+  background: var(--btn-bg);
+  border-color: var(--btn-bg);
+  color: var(--btn-fg);
 }
 .btn-primary:hover {
-  background: var(--gold-soft);
-  border-color: var(--gold-soft);
-}
-.light .btn-primary,
-.light-2 .btn-primary {
-  background: var(--green-900);
-  border-color: var(--green-900);
-  color: var(--paper);
-}
-.light .btn-primary:hover,
-.light-2 .btn-primary:hover {
-  background: var(--green-700);
-  border-color: var(--green-700);
+  background: var(--btn-hover);
+  border-color: var(--btn-hover);
 }
 .btn-quiet {
-  border-color: var(--line-dark);
+  border-color: var(--line);
 }
 .btn-quiet:hover {
-  border-color: var(--gold);
-}
-.light .btn-quiet,
-.light-2 .btn-quiet {
-  border-color: var(--line-light);
-}
-.light .btn-quiet:hover,
-.light-2 .btn-quiet:hover {
-  border-color: var(--ink);
+  border-color: var(--fg);
 }
 
 .text-link {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: var(--gold);
+  color: var(--accent);
   text-decoration: underline;
   text-decoration-color: color-mix(in oklch, currentColor 40%, transparent);
 }
 .text-link:hover {
   text-decoration-color: currentColor;
 }
-.light .text-link,
-.light-2 .text-link {
-  color: var(--gold-deep);
+
+/* ------------------------------------------------------------------ watercolour */
+/* Paintings are white-ground images; multiply makes the white vanish into the paper. */
+.paint {
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  user-select: none;
+}
+/* Decorative paintings settle in softly when they enter the view. Visible at rest. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .paint.settle {
+    transition: filter 1.4s var(--ease), transform 1.6s var(--ease);
+  }
+  .js .paint.settle:not(.is-in) {
+    filter: blur(2px) saturate(0.85);
+    transform: scale(0.97);
+  }
 }
 
-.rule {
-  width: 3rem;
-  height: 1px;
-  background: var(--gold);
-  border: 0;
-  margin: 0 0 2rem;
-}
-.light .rule,
-.light-2 .rule {
-  background: var(--gold-deep);
+/* Arch: the studio's recurring shape */
+.arch-mask {
+  border-radius: 999px 999px 0.75rem 0.75rem;
+  overflow: hidden;
 }
 
+/* ------------------------------------------------------------------ utilities */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -350,8 +297,8 @@ a {
   top: -4rem;
   z-index: 100;
   padding: 0.75rem 1rem;
-  background: var(--gold);
-  color: var(--green-950);
+  background: var(--green-900);
+  color: var(--paper);
 }
 .skip-link:focus {
   top: 1rem;

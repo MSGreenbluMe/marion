@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 import { primaryAction, telHref } from '../lib/booking';
+import Paint from '../components/Paint.astro';
 const order = primaryAction('Dárkový poukaz');
 const { validity, format } = site.voucher;
 ---
@@ -9,10 +10,12 @@ const { validity, format } = site.voucher;
   title="Dárkový poukaz"
   description="Dárkový poukaz na masáž, meditaci nebo rituál ve Studiu Marion v Hradci Králové. Objednáte ho zprávou nebo telefonem."
 >
-  <section class="section">
+  <section class="section clip">
+    <Paint name="blob-gold" class="p-wash" eager settle={false} />
+    <Paint name="eucalyptus-2" class="p-leaf" drift={0.06} />
     <div class="wrap">
       <p class="eyebrow">Dárkový poukaz</p>
-      <h1>Darujte chvíli klidu</h1>
+      <h1>Darujte chvíli <em>klidu</em></h1>
       <p class="lead">Poukaz můžete věnovat na konkrétní masáž, meditaci nebo rituál, nebo na částku dle vašeho výběru.</p>
 
       <ol class="steps">
@@ -47,6 +50,23 @@ const { validity, format } = site.voucher;
 </Base>
 
 <style>
+  section :global(.p-wash) {
+    position: absolute;
+    right: -10rem;
+    top: -6rem;
+    width: min(46rem, 110vw);
+    opacity: 0.7;
+  }
+  section :global(.p-leaf) {
+    position: absolute;
+    right: 4%;
+    top: 4rem;
+    width: min(9rem, 22vw);
+    rotate: 20deg;
+  }
+  .wrap {
+    position: relative;
+  }
   .steps {
     list-style: none;
     counter-reset: step;
@@ -58,7 +78,7 @@ const { validity, format } = site.voucher;
   }
   .steps li {
     counter-increment: step;
-    border-top: 1px solid var(--line-dark);
+    border-top: 1px solid var(--line);
     padding-top: 1.5rem;
   }
   .steps li::before {
@@ -67,7 +87,9 @@ const { validity, format } = site.voucher;
     font-family: var(--font-display);
     font-size: 2.6rem;
     line-height: 1;
-    color: var(--gold);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold-deep);
     margin-bottom: 1rem;
   }
   .steps h2 {

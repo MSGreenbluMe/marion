@@ -19,15 +19,25 @@ const fontCss = `
 @font-face{font-family:J;font-weight:300;src:url(${font('jost', 'jost-latin-ext-300-normal.woff2')});unicode-range:U+0100-02AF}
 `;
 
+const art = (n) => pathToFileURL(join(root, 'public/art', `${n}.webp`)).href;
 const og = `<!doctype html><meta charset="utf-8"><style>${fontCss}
 html,body{margin:0;width:1200px;height:630px;overflow:hidden}
-body{background:radial-gradient(60% 80% at 50% 55%, oklch(0.78 0.126 85 / .22), transparent 70%), oklch(0.19 0.028 148);
-color:oklch(0.93 0.018 85);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:J}
-h1{font-family:C;font-weight:300;font-size:118px;margin:0;letter-spacing:-.01em}
-hr{width:64px;border:0;height:1px;background:oklch(0.78 0.126 85);margin:28px 0 30px}
-p{margin:0;font-size:30px;letter-spacing:.04em;color:oklch(0.8 0.022 110)}
-small{position:absolute;bottom:44px;font-size:20px;letter-spacing:.3em;text-transform:uppercase;color:oklch(0.78 0.126 85)}
-</style><body><h1>Studio Marion</h1><hr><p>Masáže, meditace a ženské kruhy</p><small>Hradec Králové</small>`;
+body{position:relative;background:#f6f1e6;color:#1d2b22;font-family:J}
+img{position:absolute;mix-blend-mode:multiply}
+.wash{left:-140px;top:-180px;width:820px;opacity:.75}
+.arch{right:120px;top:40px;height:560px}
+.leaf{right:400px;top:230px;height:360px;rotate:-10deg}
+.stones{right:40px;bottom:-10px;width:260px}
+.glow{position:absolute;right:200px;top:190px;width:250px;height:250px;border-radius:50%;
+background:radial-gradient(circle,rgba(250,225,150,.75),rgba(240,200,110,.25) 25%,transparent 65%)}
+.t{position:absolute;left:80px;top:170px;width:560px}
+small{font-size:20px;letter-spacing:.28em;text-transform:uppercase;color:#8a5a12}
+h1{font-family:C;font-weight:300;font-size:104px;line-height:1;margin:22px 0 26px;letter-spacing:-.02em}
+p{margin:0;font-size:29px;color:#4a5a50}
+</style><body>
+<img class="wash" src="${art('blob-gold')}"><img class="arch" src="${art('arch')}"><div class="glow"></div>
+<img class="leaf" src="${art('eucalyptus')}"><img class="stones" src="${art('stones')}">
+<div class="t"><small>Hradec Králové</small><h1>Studio Marion</h1><p>Masáže, meditace a ženské kruhy</p></div>`;
 
 const icon = (size) => `<!doctype html><meta charset="utf-8"><style>html,body{margin:0;width:${size}px;height:${size}px;overflow:hidden;background:#122318}
 img{width:${size}px;height:${size}px;display:block}</style><img src="${pathToFileURL(join(root, 'public/favicon.svg')).href}">`;

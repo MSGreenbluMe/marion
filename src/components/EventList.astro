@@ -3,7 +3,7 @@ import { upcomingEvents } from '../lib/events';
 import { findService, serviceUrl } from '../data/services';
 import { czDate, kc } from '../lib/format';
 import { primaryAction } from '../lib/booking';
-import Illustration from './Illustration.astro';
+import Paint from './Paint.astro';
 
 interface Props {
   limit?: number;
@@ -50,7 +50,7 @@ const contact = primaryAction();
   </ol>
 ) : (
   <div class="empty">
-    <Illustration name="moon" class="moon" />
+    <Paint name="moon" class="moon" />
     <p>Nové termíny připravuji. Napište mi a dám vám vědět.</p>
     <a class="text-link" href={contact.href} {...(contact.external ? { target: '_blank', rel: 'noopener' } : {})}>
       {contact.label}
@@ -63,15 +63,16 @@ const contact = primaryAction();
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--line-dark);
+    border-top: 1px solid var(--line);
   }
   .event {
+    position: relative;
     display: grid;
     grid-template-columns: 5.5rem 1fr;
     gap: 0.5rem 1.5rem;
     align-items: center;
     padding: 1.5rem 0;
-    border-bottom: 1px solid var(--line-dark);
+    border-bottom: 1px solid var(--line);
   }
   .event .btn {
     grid-column: 2;
@@ -92,13 +93,14 @@ const contact = primaryAction();
   }
   .day {
     font-family: var(--font-display);
-    font-size: 2.4rem;
-    color: var(--gold);
+    font-weight: 300;
+    font-size: 2.6rem;
+    color: var(--accent);
   }
   .month,
   .weekday {
     font-size: 0.85rem;
-    color: var(--on-dark-soft);
+    color: var(--fg-soft);
   }
   h3 {
     font-size: 1.5rem;
@@ -115,23 +117,22 @@ const contact = primaryAction();
     flex-wrap: wrap;
     gap: 0 1.25rem;
     margin: 0;
-    color: var(--on-dark-soft);
+    color: var(--fg-soft);
   }
   .note {
     margin: 0.25rem 0 0;
     font-size: 0.95rem;
   }
   .empty {
-    padding: 3rem 1.5rem;
-    border: 1px solid var(--line-dark);
-    border-radius: 0.5rem;
+    padding: 1rem 1.5rem 2.5rem;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
     text-align: center;
-    background: radial-gradient(60% 80% at 50% 0%, oklch(0.78 0.126 85 / 0.06), transparent 70%);
+    background: var(--grain), var(--paper);
   }
   .empty :global(.moon) {
-    width: 5rem;
-    margin: 0 auto 1.25rem;
-    color: var(--gold);
+    width: 11rem;
+    margin: 0 auto 0.5rem;
   }
   .empty p {
     font-family: var(--font-display);

@@ -9,7 +9,7 @@ interface Props {
 const { service, option } = Astro.props;
 const primary = primaryAction(service, option);
 ---
-<nav class="bar" aria-label="Objednání">
+<nav class="bar dark" aria-label="Objednání">
   <a
     class="bar-primary"
     href={primary.href}
@@ -28,7 +28,7 @@ const primary = primaryAction(service, option);
     gap: 0.5rem;
     padding: 0.6rem var(--gutter) calc(0.6rem + env(safe-area-inset-bottom));
     background: color-mix(in oklch, var(--green-950) 94%, transparent);
-    border-top: 1px solid var(--line-dark);
+    border-top: 1px solid var(--line);
     backdrop-filter: blur(8px);
   }
   .bar a {
@@ -49,8 +49,8 @@ const primary = primaryAction(service, option);
   }
   .bar-call {
     flex: 0 0 34%;
-    border: 1px solid var(--line-dark);
-    color: var(--on-dark);
+    border: 1px solid var(--line);
+    color: var(--fg);
   }
   @media (min-width: 48rem) {
     .bar {
