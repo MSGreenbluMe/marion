@@ -92,3 +92,10 @@ Stránka /poukaz vysvětluje, že se poukaz objednává zprávou. Doplňte pros�
 
 - [ ] Jak dlouho poukaz platí
 - [ ] V jaké podobě ho předáváte (tištěný, PDF…)
+
+## 13. Zvuk na webu (nepovinné)
+
+Web má tichou zvukovou vrstvu, kterou si návštěvník sám zapne tlačítkem „Zvuk“: dech, vzdálené zvonky a krátké šeptané věty („Vítejte.“, „Zpomalte.“, „Nadechněte se.“, „Jste tady.“, „Nic nemusíte.“, „Návrat k sobě.“).
+
+- [ ] Šepot teď namluvil umělý hlas (ElevenLabs). Pokud chcete, nahrajte stejné věty šeptem svým hlasem (stačí mobil v tichém pokoji) a vyměníme je – bude to osobnější.
+- [ ] Souhlasí věty, nebo chcete jiné?

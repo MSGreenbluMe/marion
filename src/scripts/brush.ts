@@ -460,6 +460,7 @@ function start(): void {
   // older ones outward. Rings shrink toward the centre so the pattern stays delicate.
   const drop = (x: number, y: number) => {
     wake();
+    window.dispatchEvent(new CustomEvent('marion:drop'));
     pigment++;
     const ink = colorFor(0.32);
     pigment++;
@@ -526,7 +527,8 @@ function start(): void {
   }
 }
 
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+if (finePointer && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   try {
     start();
   } catch (err) {

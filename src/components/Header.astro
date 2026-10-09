@@ -1,6 +1,7 @@
 ---
 import { site } from '../data/site';
 import { telHref } from '../lib/booking';
+import SoundToggle from './SoundToggle.astro';
 
 const path = Astro.url.pathname.replace(/\.html$/, '');
 const nav = [
@@ -27,6 +28,8 @@ const isCurrent = (href: string) =>
       <a class="phone" href={telHref()}>{site.contact.phoneDisplay}</a>
     </nav>
 
+    <div class="tools">
+      <SoundToggle />
     <details class="nav-mobile">
       <summary>Menu</summary>
       <nav aria-label="Hlavní navigace">
@@ -37,6 +40,7 @@ const isCurrent = (href: string) =>
         </ul>
       </nav>
     </details>
+    </div>
   </div>
 </header>
 
@@ -74,6 +78,11 @@ const isCurrent = (href: string) =>
   }
   a[aria-current='page'] {
     color: var(--gold-deep);
+  }
+  .tools {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
   .nav-desktop {
     display: none;

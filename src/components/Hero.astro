@@ -73,13 +73,15 @@ const [first, rest] = comma > 0 ? [headline.slice(0, comma + 1), headline.slice(
       void glow.offsetWidth;
       glow.style.animation = '';
     }
+    const cue = (phase: string) => window.dispatchEvent(new CustomEvent('marion:breath', { detail: phase }));
+    cue('start');
     let t = 0;
     for (let i = 0; i < 3; i++) {
-      timers.push(window.setTimeout(() => say('Nádech'), t));
-      timers.push(window.setTimeout(() => say('Výdech'), t + 4000));
+      timers.push(window.setTimeout(() => { say('Nádech'); cue('in'); }, t));
+      timers.push(window.setTimeout(() => { say('Výdech'); cue('out'); }, t + 4000));
       t += 10000;
     }
-    timers.push(window.setTimeout(() => say('Děkuji. Teď jste tady.'), t));
+    timers.push(window.setTimeout(() => { say('Děkuji. Teď jste tady.'); cue('end'); }, t));
     timers.push(window.setTimeout(() => { say(''); stop(); }, t + 4500));
   };
   btn?.addEventListener('click', () => (hero?.classList.contains('breathing') ? (stop(), say('')) : start()));

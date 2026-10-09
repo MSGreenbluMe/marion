@@ -42,3 +42,8 @@ filter or z-index on a *parent* of a painting — that would isolate the blend a
 simulation for strokes and the area-preserving marbling map for click/tap ink drops (suminagashi rings).
 It loads when the page is idle, sleeps when unused, never runs with reduced motion, and can be switched
 off by the visitor (remembered in localStorage). Tune strength, fading and colours at the top of the file.
+
+**Sound:** `src/scripts/sound.ts` is an optional sound layer, off until the visitor presses „Zvuk“ in the
+header. Ambience (air, singing bowl, distant chimes), the breath-guide inhale/exhale and the ink-drop puff are
+synthesised with Web Audio. Whispered phrases are MP3 files in `public/audio/whispers/` (ElevenLabs, voice
+„Auryn“); a missing file is simply skipped. Martina can replace them with her own recordings using the same names.

@@ -81,8 +81,13 @@ const business = {
     <BrushToggle floating />
     <script>
       import '../scripts/motion.ts';
-      // The paint brush loads once the page is idle; it never runs with reduced motion.
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      import '../scripts/sound.ts';
+      // The paint brush loads once the page is idle, only with a real mouse (phones get nothing),
+      // and never with reduced motion.
+      const brushOk =
+        window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (brushOk) {
         const go = () => import('../scripts/brush.ts');
         if ('requestIdleCallback' in window) window.requestIdleCallback(go, { timeout: 2500 });
         else setTimeout(go, 1200);
