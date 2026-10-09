@@ -45,5 +45,5 @@ off by the visitor (remembered in localStorage). Tune strength, fading and colou
 
 **Sound:** `src/scripts/sound.ts` is an optional sound layer, off until the visitor presses „Zvuk“ in the
 header. Ambience (air, singing bowl, distant chimes), the breath-guide inhale/exhale and the ink-drop puff are
-synthesised with Web Audio. Whispered phrases are MP3 files in `public/audio/whispers/` (ElevenLabs, voice
+synthesised with Web Audio. Whispered phrases are MP3 files in `public/audio/whispers/` (`name-1.mp3` … `name-4.mp3`, four takes picked at random; ElevenLabs, voice
 „Auryn“); a missing file is simply skipped. Martina can replace them with her own recordings using the same names.

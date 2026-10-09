@@ -12,6 +12,8 @@
 
 const STORAGE_KEY = 'marion-sound';
 
+// Each phrase exists in 4 takes (name-1.mp3 … name-4.mp3); one is picked at random each time.
+const TAKES = 4;
 type Whisper = { file: string; gain?: number };
 const WHISPERS: Record<string, Whisper> = {
   welcome: { file: 'vitejte' },
@@ -20,13 +22,11 @@ const WHISPERS: Record<string, Whisper> = {
   youAreHere: { file: 'jste-tady' },
   nothingToDo: { file: 'nic-nemusite' },
   returnToSelf: { file: 'navrat-k-sobe' },
-  sigh: { file: 'povzdech', gain: 0.8 },
 };
 
 // Section -> whisper, played once per page view when the section is 40 % visible.
 const SECTION_WHISPERS: [string, keyof typeof WHISPERS][] = [
   ['#jak-se-citite', 'slowDown'],
-  ['#nabidka', 'sigh'],
   ['#o-mne', 'returnToSelf'],
   ['.voucher', 'nothingToDo'],
   ['#kontakt', 'youAreHere'],
@@ -243,12 +243,16 @@ class SoundScape {
     }
   }
 
+  /** Milliseconds until another whisper may play (whispers never crowd each other). */
+  wait(): number {
+    return Math.max(0, this.lastWhisper + 9000 - performance.now());
+  }
+
   async whisper(key: keyof typeof WHISPERS, force = false) {
-    const now = performance.now();
-    if (!force && now - this.lastWhisper < 9000) return;
-    this.lastWhisper = now;
+    if (!force && this.wait() > 0) return;
+    this.lastWhisper = performance.now();
     const w = WHISPERS[key];
-    const buf = await this.load(w.file);
+    const buf = await this.load(`${w.file}-${1 + Math.floor(Math.random() * TAKES)}`);
     if (!buf) return;
     const src = this.ctx.createBufferSource();
     src.buffer = buf;
@@ -295,14 +299,28 @@ const updateButtons = () => {
 const watchSections = () => {
   if (observer || !('IntersectionObserver' in window)) return;
   const played = new Set<string>();
+  const visible = new Set<string>();
+  const attempt = (sel: string, key: keyof typeof WHISPERS) => {
+    if (!on || !scape || played.has(sel) || !visible.has(sel)) return;
+    const wait = scape.wait();
+    if (wait > 0) {
+      // another whisper is still in the air: try again when it has faded
+      window.setTimeout(() => attempt(sel, key), wait + 300);
+      return;
+    }
+    played.add(sel);
+    scape.whisper(key);
+  };
   observer = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
-        if (!e.isIntersecting || !on || !scape) continue;
         const match = SECTION_WHISPERS.find(([sel]) => e.target.matches(sel));
-        if (match && !played.has(match[0])) {
-          played.add(match[0]);
-          scape.whisper(match[1]);
+        if (!match) continue;
+        if (e.isIntersecting) {
+          visible.add(match[0]);
+          attempt(match[0], match[1]);
+        } else {
+          visible.delete(match[0]);
         }
       }
     },
