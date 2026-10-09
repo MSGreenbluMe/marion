@@ -312,3 +312,67 @@ a {
     transition: none !important;
   }
 }
+
+/* ------------------------------------------------------------------ brush (scripts/brush.ts) */
+.brush-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 45;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+.brush-canvas:not(.on) {
+  visibility: hidden;
+}
+.brush-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.35rem 1rem 0.35rem 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--paper) 92%, transparent);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+.brush-toggle[hidden] {
+  display: none;
+}
+.brush-toggle:hover {
+  border-color: var(--gold-deep);
+}
+.brush-toggle svg {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.35rem;
+  border-radius: 50%;
+  background: var(--green-900);
+  color: var(--gold);
+}
+.brush-toggle[aria-pressed='false'] svg {
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+}
+.brush-toggle.floating {
+  position: fixed;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 46;
+  box-shadow: 0 0.75rem 1.5rem -1rem oklch(0.3 0.04 120 / 0.5);
+}
+@media (max-width: 47.99rem), (pointer: coarse) {
+  .brush-toggle.floating {
+    display: none;
+  }
+}
+.dark .brush-toggle {
+  background: transparent;
+  color: var(--fg);
+}

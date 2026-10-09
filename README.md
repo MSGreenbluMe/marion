@@ -37,3 +37,8 @@ Otherwise `site.booking.channel` picks `whatsapp`, `sms` or `phone`.
 Re-paint with `python3 scripts/watercolor/paint.py [name …]` (needs `pip install opencv-python-headless numpy`).
 The images are white-ground and shown with `mix-blend-mode: multiply`, so never put a transform,
 filter or z-index on a *parent* of a painting — that would isolate the blend and show the white.
+
+**Brush:** `src/scripts/brush.ts` turns the cursor into a watercolour brush — a small WebGL2 fluid
+simulation for strokes and the area-preserving marbling map for click/tap ink drops (suminagashi rings).
+It loads when the page is idle, sleeps when unused, never runs with reduced motion, and can be switched
+off by the visitor (remembered in localStorage). Tune strength, fading and colours at the top of the file.

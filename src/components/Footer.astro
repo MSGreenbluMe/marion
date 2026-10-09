@@ -2,6 +2,7 @@
 import { site } from '../data/site';
 import { telHref } from '../lib/booking';
 import Illustration from './Illustration.astro';
+import BrushToggle from './BrushToggle.astro';
 
 const { contact, legal } = site;
 const hasLegal = legal.fullName || legal.ico || legal.registeredAddress;
@@ -48,6 +49,7 @@ const hasLegal = legal.fullName || legal.ico || legal.registeredAddress;
       <span aria-hidden="true"> · </span>
       Web nepoužívá cookies.
     </p>
+    <p><BrushToggle /></p>
   </div>
 </footer>
 
